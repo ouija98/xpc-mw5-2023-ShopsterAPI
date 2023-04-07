@@ -30,3 +30,13 @@ C:\Users\Terrrr\Desktop\leto2023\dotnet\VS_example_project\WebApplication1\WebAp
 C:\Users\Terrrr\Desktop\leto2023\dotnet\VS_example_project\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.pdb
 C:\Users\Terrrr\Desktop\leto2023\dotnet\VS_example_project\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.genruntimeconfig.cache
 C:\Users\Terrrr\Desktop\leto2023\dotnet\VS_example_project\WebApplication1\WebApplication1\obj\Debug\net6.0\ref\WebApplication1.dll
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.csproj.AssemblyReference.cache
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.AssemblyInfoInputs.cache
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.AssemblyInfo.cs
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.csproj.CoreCompileInputs.cache
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.dll
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\refint\WebApplication1.dll
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.pdb
