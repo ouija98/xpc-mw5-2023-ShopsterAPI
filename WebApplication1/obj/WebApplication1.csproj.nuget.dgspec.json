@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj": {}
+    "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone2\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj": {
+    "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone2\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj",
+        "projectUniqueName": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone2\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj",
         "projectName": "WebApplication1",
-        "projectPath": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj",
+        "projectPath": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone2\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj",
         "packagesPath": "C:\\Users\\Terrrr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\obj\\",
+        "outputPath": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone2\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Terrrr\\AppData\\Roaming\\NuGet\\NuGet.Config",

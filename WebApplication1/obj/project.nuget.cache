@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nFUKOkkdtWRjsKwDFTvQxlDKplO83c1eSiHBu4/LEaJObZWzVNiZ6BsE9fE0Bw9yQ7/ARuG9+CsuJD6gHCRSyQ==",
+  "dgSpecHash": "sQTxvcos4X87VeLJ9UN9EHLhUGFpR3GK6CHVf8a/iuImzwavB1NsL9Vf6Z8EB0xG1/jHqv4JXdTjoJ2CKwjYvw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj",
+  "projectFilePath": "C:\\Users\\Terrrr\\Desktop\\leto2023\\dotnet\\clone2\\xpc-mw5-2023-ShopsterAPI\\WebApplication1\\WebApplication1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Terrrr\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\Terrrr\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

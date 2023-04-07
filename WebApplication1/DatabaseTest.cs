@@ -4,7 +4,7 @@ using projekt.Repositories;
 
 namespace projekt;
 
-
+/*
 class Program
 {
 
@@ -131,7 +131,7 @@ class Program
 
     }
 }
-
+*/
 
 
 
