@@ -9,25 +9,31 @@ namespace WebApplication1.Controllers
     public class CategoryController : ControllerBase
     {
 
-        [HttpGet(Name = "GetCategories")]
+        [HttpGet("Get all categories")]
         public void Get()
         {
 
         }
 
-        [HttpPut(Name = "UpdateCategory")]
-        public void Update()
+        [HttpGet("Get a category by Id")]
+        public void GetById(string Id)
         {
 
         }
 
-        [HttpDelete(Name = "DeleteCategory")]
-        public void Delete()
+        [HttpPut("Update a category by Id")]
+        public void Update(string Id)
         {
 
         }
 
-        [HttpPost(Name = "AddCategory")]
+        [HttpDelete("Delete a category by Id")]
+        public void Delete(string Id)
+        {
+
+        }
+
+        [HttpPost("Add a randomly generated category")]
         public IEnumerable<CategoryEntity> Add()
         {
             var faker = new Faker<CategoryEntity>()

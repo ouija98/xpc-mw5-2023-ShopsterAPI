@@ -8,25 +8,31 @@ namespace WebApplication1.Controllers
     [Route("[controller]")]
     public class RatingController : ControllerBase
     {
-        [HttpGet(Name = "GetRatings")]
+        [HttpGet("Get all ratings")]
         public void Get()
         {
 
         }
 
-        [HttpPut(Name = "UpdateRatings")]
-        public void Update()
+        [HttpGet("Get a rating by Id")]
+        public void GetById(string Id)
         {
 
         }
 
-        [HttpDelete(Name = "DeleteRatings")]
-        public void Delete()
+        [HttpPut("Update a rating by Id")]
+        public void Update(string Id)
         {
 
         }
 
-        [HttpPost(Name = "AddRatings")]
+        [HttpDelete("Delete a rating by Id")]
+        public void Delete(string Id)
+        {
+
+        }
+
+        [HttpPost("Add a randomly generated rating")]
         public IEnumerable<RatingEntity> Add()
         {
             var faker = new Faker<RatingEntity>()

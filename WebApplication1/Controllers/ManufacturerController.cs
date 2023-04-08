@@ -9,25 +9,31 @@ namespace WebApplication1.Controllers
     public class ManufacturerController : ControllerBase
     {
 
-        [HttpGet(Name = "GetManufacturers")]
+        [HttpGet("Get all manufacturers")]
         public void Get()
         {
 
         }
-        
-        [HttpPut(Name = "UpdateManufacturer")]
-        public void Update()
+
+        [HttpGet("Get a manufacturer by Id")]
+        public void GetById(string Id)
+        {
+
+        }
+
+        [HttpPut("Update a manufacturer by Id")]
+        public void Update(string Id)
         {
 
         }
         
-        [HttpDelete(Name = "DeleteManufacturer")]
-        public void Delete()
+        [HttpDelete("Delete a manufacturer by Id")]
+        public void Delete(string Id)
         {
 
         }
         
-        [HttpPost(Name = "AddManufacturer")]
+        [HttpPost("Add a randomly generated manufacturer")]
         public IEnumerable<ManufacturerEntity> Add()
         {
             var faker = new Faker<ManufacturerEntity>()
