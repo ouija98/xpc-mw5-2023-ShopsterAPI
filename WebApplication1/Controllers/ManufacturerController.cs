@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bogus;
+using Microsoft.AspNetCore.Mvc;
+using projekt.Entities;
 
 namespace WebApplication1.Controllers
 {
@@ -26,9 +28,18 @@ namespace WebApplication1.Controllers
         }
         
         [HttpPost(Name = "AddManufacturer")]
-        public void Add()
+        public IEnumerable<ManufacturerEntity> Add()
         {
+            var faker = new Faker<ManufacturerEntity>()
+            .RuleFor(p => p.Id, f => f.Random.Guid())
+            .RuleFor(p => p.Name, f => f.Lorem.Word())
+            .RuleFor(p => p.Description, f => String.Join(" ", f.Lorem.Words()))
+            .RuleFor(p => p.Logo, f => f.Lorem.Word() + ".jpg")
+            .RuleFor(p => p.CountryOfOrigin, f => f.Address.Country());
 
+            var myManufacturers = faker.Generate(5);
+
+            return (IEnumerable<ManufacturerEntity>)myManufacturers;
         }
         
 

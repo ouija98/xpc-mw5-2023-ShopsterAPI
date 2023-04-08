@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bogus;
+using Microsoft.AspNetCore.Mvc;
+using projekt.Entities;
 
 namespace WebApplication1.Controllers
 {
@@ -26,9 +28,15 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost(Name = "AddCategory")]
-        public void Add()
+        public IEnumerable<CategoryEntity> Add()
         {
+            var faker = new Faker<CategoryEntity>()
+            .RuleFor(p => p.Id, f => f.Random.Guid())
+            .RuleFor(p => p.Title, f => String.Join(" ", f.Commerce.Categories(1)));
 
+            var myCategories = faker.Generate(5);
+
+            return (IEnumerable<CategoryEntity>)myCategories;
         }
 
 

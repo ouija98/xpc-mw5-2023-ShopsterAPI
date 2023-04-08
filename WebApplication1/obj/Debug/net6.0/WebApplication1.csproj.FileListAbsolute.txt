@@ -72,3 +72,4 @@ C:\Users\Terrrr\Desktop\leto2023\dotnet\clone2\xpc-mw5-2023-ShopsterAPI\WebAppli
 C:\Users\Terrrr\Desktop\leto2023\dotnet\clone2\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.pdb
 C:\Users\Terrrr\Desktop\leto2023\dotnet\clone2\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\WebApplication1.genruntimeconfig.cache
 C:\Users\Terrrr\Desktop\leto2023\dotnet\clone2\xpc-mw5-2023-ShopsterAPI\WebApplication1\obj\Debug\net6.0\ref\WebApplication1.dll
+C:\Users\Terrrr\Desktop\leto2023\dotnet\clone2\xpc-mw5-2023-ShopsterAPI\WebApplication1\bin\Debug\net6.0\Bogus.dll
