@@ -37,9 +37,9 @@ namespace WebApplication1.Controllers
             .RuleFor(p => p.Logo, f => f.Lorem.Word() + ".jpg")
             .RuleFor(p => p.CountryOfOrigin, f => f.Address.Country());
 
-            var myManufacturers = faker.Generate(5);
+            var myManufacturer = faker.Generate(1);
 
-            return (IEnumerable<ManufacturerEntity>)myManufacturers;
+            return (IEnumerable<ManufacturerEntity>)myManufacturer;
         }
         
 

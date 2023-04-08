@@ -34,9 +34,9 @@ namespace WebApplication1.Controllers
             .RuleFor(p => p.Id, f => f.Random.Guid())
             .RuleFor(p => p.Title, f => String.Join(" ", f.Commerce.Categories(1)));
 
-            var myCategories = faker.Generate(5);
+            var myCategory = faker.Generate(1);
 
-            return (IEnumerable<CategoryEntity>)myCategories;
+            return (IEnumerable<CategoryEntity>)myCategory;
         }
 
 
