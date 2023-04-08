@@ -20,7 +20,7 @@ public record CommodityEntity : EntityBase
 
     public ManufacturerEntity? Manufacturer { get; set; }
 
-    public RatingEntity? Rating { get; set; }
+    public List<RatingEntity> Ratings { get; set; }
 
 
 }

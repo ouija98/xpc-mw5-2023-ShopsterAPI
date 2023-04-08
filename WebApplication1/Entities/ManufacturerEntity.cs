@@ -13,7 +13,5 @@ public record ManufacturerEntity : EntityBase
     public string? CountryOfOrigin { get; set; }
 
     public ICollection<CommodityEntity>? Commodities { get; set; }
-
-
-
+    
 }
