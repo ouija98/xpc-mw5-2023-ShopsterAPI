@@ -54,6 +54,15 @@ public class ManufacturerRepository : IRepository<ManufacturerEntity>
 
         Database.Instance.Manufacturers.Remove(manufacturer);
     }
+    
+    /// <summary>
+    /// Gets all manufacturer entities.
+    /// </summary>
+    /// <returns>An enumerable of all manufacturer entities.</returns>
+    public IEnumerable<ManufacturerEntity> GetAll()
+    {
+        return Database.Instance.Manufacturers;
+    }
 
     /// <summary>
     /// Adds a commodity to a manufacturer's list of commodities.

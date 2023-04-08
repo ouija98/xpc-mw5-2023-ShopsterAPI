@@ -32,6 +32,15 @@ namespace WebApplication1.Repositories
         }
 
         /// <summary>
+        /// Gets all commodity entities.
+        /// </summary>
+        /// <returns>A list of all commodity entities.</returns>
+        public IEnumerable<CommodityEntity> GetAll()
+        {
+            return Database.Instance.Commodities.ToList();
+        }
+        
+        /// <summary>
         /// Gets a commodity entity by its ID.
         /// </summary>
         /// <param name="id">The ID of the commodity entity to get.</param>

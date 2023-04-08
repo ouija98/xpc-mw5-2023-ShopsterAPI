@@ -75,6 +75,11 @@ namespace WebApplication1.Repositories
             Database.Instance.Categories.Remove(category);
         }
 
+        public IEnumerable<CategoryEntity> GetAll()
+        {
+            return Database.Instance.Categories;
+        }
+
         /// <summary>
         /// Adds a commodity to a category.
         /// </summary>

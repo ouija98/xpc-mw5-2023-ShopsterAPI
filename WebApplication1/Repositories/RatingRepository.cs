@@ -1,6 +1,8 @@
-﻿using projekt.Entities;
+﻿using projekt;
+using projekt.Entities;
+using projekt.Repositories;
 
-namespace projekt.Repositories;
+namespace WebApplication1.Repositories;
     /// <summary>
     /// The repository for managing <see cref="RatingEntity"/> entities.
     /// </summary>
@@ -64,5 +66,16 @@ namespace projekt.Repositories;
         {
             var rating = Database.Instance.Ratings.Single(r => r.Id == id);
             Database.Instance.Ratings.Remove(rating);
+        }
+        
+        /// <summary>
+        /// Gets all rating entities.
+        /// </summary>
+        /// <returns>An enumerable of all rating entities.</returns>
+        public IEnumerable<RatingEntity> GetAll()
+        {
+            
+                return Database.Instance.Ratings.ToList();
+        
         }
     }
