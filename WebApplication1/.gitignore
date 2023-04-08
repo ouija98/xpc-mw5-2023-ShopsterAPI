@@ -1,0 +1,100 @@
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.ncb
+*.aps
+*.bak
+*.cache
+*.ilk
+*.log
+*.obj
+*.pdb
+*.pgc
+*.pgd
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.dbmdl
+*.dbproj.schemaview
+*.dbproj.user
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+_ReSharper*/
+node_modules
+wwwroot
+
+# Ignore build artifacts
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+Any CPU/
+build/
+[Bb]in/
+[Oo]bj/
+*.apk
+*.ap_
+*.deploy
+*.msi
+*.msp
+*.pdb
+*.msm
+*.satellite.xml
+*.user
+*.log
+*.manifest
+*.cache
+*.docstates
+*.scc
+
+# Ignore NuGet Packages
+*.nupkg
+packages/
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+# Ignore MSTest output
+TestResults/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Ignore Resharper cache files
+resharper*/**/Cache
+
+# Ignore SQL Server files
+*.mdf
+*.ldf
+
+# Ignore other generated files
+packages.config
+*.userprefs
+*.vsconfig
+*.vstemplate
+*.csproj.user
+*.sln.docstates
+*.suo
+*.sdf
+*.sln.ide
+*.dbmdl
+*.opensdf
+*.VC.opendb
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+
+# Rider specific files
+.idea/
+*.sln.iml
+
+# Ignore .NET Core Tools
+project.lock.json
+project.fragment.lock.json
+artifacts/
+bin/
+obj/
