@@ -1,51 +1,64 @@
 using projekt.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
-namespace projekt;
-
-public class Database
+namespace WebApplication1
 {
-    private static readonly Lazy<Database> LazyDatabase =
-        new Lazy<Database>(() => new Database());
-    
-    public static Database Instance => LazyDatabase.Value;
-
-    private Database()
+    public class Database : DbContext
     {
-    }
-    
-    public ICollection<CommodityEntity> Commodities { get; } = new List<CommodityEntity>();
-    public ICollection<CategoryEntity> Categories { get; } = new List<CategoryEntity>();
-    public ICollection<ManufacturerEntity> Manufacturers { get; } = new List<ManufacturerEntity>();
-    public ICollection<RatingEntity> Ratings { get; } = new List<RatingEntity>();
+        private static Database _instance;
 
-    public void ShowData()
-    {
-        Console.WriteLine("--------------------------");
-        
-        Console.WriteLine("# Zbozi:");
-        foreach (var c in Commodities)
+        public static Database Instance
         {
-            Console.WriteLine(c);
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new Database();
+                }
+                return _instance;
+            }
         }
-        
-        Console.WriteLine("# Categories:");
-        foreach (var c in Categories)
+
+        private Database()
         {
-            Console.WriteLine(c);
+            // Private constructor to prevent instantiation from outside the class.
         }
-        
-        Console.WriteLine("# Manufacturers:");
-        foreach (var e in Manufacturers)
+
+        public DbSet<CommodityEntity> Commodities { get; set; }
+        public DbSet<CategoryEntity> Categories { get; set; }
+        public DbSet<ManufacturerEntity> Manufacturers { get; set; }
+        public DbSet<RatingEntity> Ratings { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Console.WriteLine(e);
+            optionsBuilder.UseSqlServer("your_connection_string_here");
         }
-        
-        Console.WriteLine("# Ratings:");
-        foreach (var s in Ratings)
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Console.WriteLine(s);
+            modelBuilder.Entity<CommodityEntity>()
+                .HasKey(c => c.Id);
+
+            modelBuilder.Entity<CategoryEntity>()
+                .HasKey(c => c.Id);
+
+            modelBuilder.Entity<ManufacturerEntity>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<RatingEntity>()
+                .HasKey(s => s.Id);
+
+            modelBuilder.Entity<CommodityEntity>()
+                .HasOne(c => c.Category)
+                .WithMany(c => c.Commodities)
+                .HasForeignKey(c => c.Category.Id);
+
+            modelBuilder.Entity<CommodityEntity>()
+                .HasOne(c => c.Manufacturer)
+                .WithMany()
+                .HasForeignKey(c => c.Manufacturer.Id);
         }
-        
-        Console.WriteLine("--------------------------");
     }
 }

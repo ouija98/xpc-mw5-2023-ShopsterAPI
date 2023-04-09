@@ -1,5 +1,4 @@
-﻿using projekt;
-using projekt.Entities;
+﻿using projekt.Entities;
 using projekt.Repositories;
 
 namespace WebApplication1.Repositories
@@ -9,11 +8,7 @@ namespace WebApplication1.Repositories
     /// </summary>
     public class CategoryRepository : IRepository<CategoryEntity>
     {
-        /// <summary>
-        /// Creates a new category.
-        /// </summary>
-        /// <param name="entity">The category to create.</param>
-        /// <returns>The ID of the created category.</returns>
+        /// <inheritdoc/>
         public Guid Create(CategoryEntity entity)
         {
             if (entity is null)
@@ -27,21 +22,13 @@ namespace WebApplication1.Repositories
             return entity.Id;
         }
 
-        /// <summary>
-        /// Gets a specific category by ID.
-        /// </summary>
-        /// <param name="id">The ID of the category to get.</param>
-        /// <returns>The category with the specified ID.</returns>
+        /// <inheritdoc/>
         public CategoryEntity GetById(Guid id)
         {
             return Database.Instance.Categories.Single(c => c.Id == id);
         }
 
-        /// <summary>
-        /// Modifies an existing category.
-        /// </summary>
-        /// <param name="entity">The modified category.</param>
-        /// <returns>The modified category.</returns>
+        /// <inheritdoc/>
         public CategoryEntity Update(CategoryEntity entity)
         {
             if (entity is null)
@@ -56,10 +43,7 @@ namespace WebApplication1.Repositories
             return existingCategory;
         }
 
-        /// <summary>
-        /// Deletes a category by ID.
-        /// </summary>
-        /// <param name="id">The ID of the category to delete.</param>
+        /// <inheritdoc/>
         public void Delete(Guid id)
         {
             var category = Database.Instance.Categories.Single(c => c.Id == id);
@@ -75,6 +59,7 @@ namespace WebApplication1.Repositories
             Database.Instance.Categories.Remove(category);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<CategoryEntity> GetAll()
         {
             return Database.Instance.Categories;

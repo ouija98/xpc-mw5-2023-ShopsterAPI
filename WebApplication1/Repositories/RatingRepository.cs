@@ -2,19 +2,13 @@
 using projekt.Entities;
 using projekt.Repositories;
 
-namespace WebApplication1.Repositories;
-    /// <summary>
-    /// The repository for managing <see cref="RatingEntity"/> entities.
-    /// </summary>
+namespace WebApplication1.Repositories
+{
+    /// <inheritdoc />
     public class RatingRepository : IRepository<RatingEntity>
     {
-        /// <summary>
-        /// Creates a new rating entity.
-        /// </summary>
-        /// <param name="entity">The entity to create.</param>
-        /// <returns>The ID of the created entity.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="entity"/> is null.</exception>
-        public Guid Create(RatingEntity? entity)
+        /// <inheritdoc />
+        public Guid Create(RatingEntity entity)
         {
             if (entity is null)
             {
@@ -23,27 +17,19 @@ namespace WebApplication1.Repositories;
 
             entity.Id = Guid.NewGuid();
             Database.Instance.Ratings.Add(entity);
+            Database.Instance.SaveChanges();
 
             return entity.Id;
         }
 
-        /// <summary>
-        /// Gets the rating entity with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the rating entity to get.</param>
-        /// <returns>The rating entity with the specified ID.</returns>
+        /// <inheritdoc />
         public RatingEntity GetById(Guid id)
         {
             return Database.Instance.Ratings.Single(r => r.Id == id);
         }
 
-        /// <summary>
-        /// Updates an existing rating entity.
-        /// </summary>
-        /// <param name="entity">The entity to update.</param>
-        /// <returns>The updated rating entity.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the <paramref name="entity"/> is null.</exception>
-        public RatingEntity Update(RatingEntity? entity)
+        /// <inheritdoc />
+        public RatingEntity Update(RatingEntity entity)
         {
             if (entity is null)
             {
@@ -58,24 +44,17 @@ namespace WebApplication1.Repositories;
             return existingRating;
         }
 
-        /// <summary>
-        /// Deletes the rating entity with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the rating entity to delete.</param>
+        /// <inheritdoc />
         public void Delete(Guid id)
         {
             var rating = Database.Instance.Ratings.Single(r => r.Id == id);
             Database.Instance.Ratings.Remove(rating);
         }
-        
-        /// <summary>
-        /// Gets all rating entities.
-        /// </summary>
-        /// <returns>An enumerable of all rating entities.</returns>
+
+        /// <inheritdoc />
         public IEnumerable<RatingEntity> GetAll()
         {
-            
-                return Database.Instance.Ratings.ToList();
-        
+            return Database.Instance.Ratings;
         }
     }
+}

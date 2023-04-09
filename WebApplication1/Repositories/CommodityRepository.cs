@@ -1,4 +1,6 @@
-﻿using projekt;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using projekt.Entities;
 using projekt.Repositories;
 
@@ -6,12 +8,8 @@ namespace WebApplication1.Repositories
 {
     public class CommodityRepository : IRepository<CommodityEntity>
     {
-        /// <summary>
-        /// Creates a new commodity entity.
-        /// </summary>
-        /// <param name="entity">The commodity entity to create.</param>
-        /// <returns>The ID of the created commodity entity.</returns>
-        public Guid Create(CommodityEntity? entity)
+        /// <inheritdoc/>
+        public Guid Create(CommodityEntity entity)
         {
             if (entity is null)
             {
@@ -28,34 +26,25 @@ namespace WebApplication1.Repositories
 
             Database.Instance.Commodities.Add(entity);
 
+            Database.Instance.SaveChanges();
+
             return entity.Id;
         }
 
-        /// <summary>
-        /// Gets all commodity entities.
-        /// </summary>
-        /// <returns>A list of all commodity entities.</returns>
+        /// <inheritdoc/>
         public IEnumerable<CommodityEntity> GetAll()
         {
             return Database.Instance.Commodities.ToList();
         }
         
-        /// <summary>
-        /// Gets a commodity entity by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the commodity entity to get.</param>
-        /// <returns>The commodity entity with the specified ID.</returns>
+        /// <inheritdoc/>
         public CommodityEntity GetById(Guid id)
         {
             return Database.Instance.Commodities.Single(s => s.Id == id);
         }   
 
-        /// <summary>
-        /// Updates an existing commodity entity.
-        /// </summary>
-        /// <param name="entity">The commodity entity to update.</param>
-        /// <returns>The updated commodity entity.</returns>
-        public CommodityEntity Update(CommodityEntity? entity)
+        /// <inheritdoc/>
+        public CommodityEntity Update(CommodityEntity entity)
         {
             if (entity is null)
             {
@@ -93,13 +82,12 @@ namespace WebApplication1.Repositories
                 }
             }
 
+            Database.Instance.SaveChanges();
+
             return existingCommodity;
         }
 
-        /// <summary>
-        /// Deletes a commodity entity by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the commodity entity to delete.</param>
+        /// <inheritdoc/>
         public void Delete(Guid id)
         {
             var commodity = Database.Instance.Commodities.Single(s => s.Id == id);
@@ -108,6 +96,8 @@ namespace WebApplication1.Repositories
                 Database.Instance.Ratings.Remove(rating);
             }
             Database.Instance.Commodities.Remove(commodity);
+
+            Database.Instance.SaveChanges();
         }
     }
 }
