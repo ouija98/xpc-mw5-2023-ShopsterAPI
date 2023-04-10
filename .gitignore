@@ -42,15 +42,17 @@ build/
 *.deploy
 *.msi
 *.msp
-*.pdb
 *.msm
 *.satellite.xml
-*.user
-*.log
 *.manifest
-*.cache
 *.docstates
 *.scc
+obj/
+bin/
+*.exe
+*.dll
+*.userprefs
+*.vspscc
 
 # Ignore NuGet Packages
 *.nupkg
@@ -73,15 +75,12 @@ resharper*/**/Cache
 
 # Ignore other generated files
 packages.config
-*.userprefs
 *.vsconfig
 *.vstemplate
 *.csproj.user
 *.sln.docstates
-*.suo
 *.sdf
 *.sln.ide
-*.dbmdl
 *.opensdf
 *.VC.opendb
 *.VC.db
@@ -93,8 +92,11 @@ packages.config
 *.sln.iml
 
 # Ignore .NET Core Tools
-project.lock.json
 project.fragment.lock.json
 artifacts/
-bin/
-obj/
+
+# Ignore appsettings.json
+appsettings.json
+
+# Ignore Debug folder
+Debug/

@@ -1,7 +1,5 @@
 using projekt.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 
 namespace WebApplication1
 {
@@ -20,20 +18,29 @@ namespace WebApplication1
                 return _instance;
             }
         }
-
+        
+        public Database(DbContextOptions<Database> options) : base(options)
+        {
+        }
+        
         private Database()
         {
             // Private constructor to prevent instantiation from outside the class.
         }
 
-        public DbSet<CommodityEntity> Commodities { get; set; }
-        public DbSet<CategoryEntity> Categories { get; set; }
-        public DbSet<ManufacturerEntity> Manufacturers { get; set; }
-        public DbSet<RatingEntity> Ratings { get; set; }
+        public DbSet<CommodityEntity> Commodity { get; set; }
+        public DbSet<CategoryEntity> Category { get; set; }
+        public DbSet<ManufacturerEntity> Manufacturer { get; set; }
+        public DbSet<RatingEntity> Rating { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("your_connection_string_here");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,12 +60,12 @@ namespace WebApplication1
             modelBuilder.Entity<CommodityEntity>()
                 .HasOne(c => c.Category)
                 .WithMany(c => c.Commodities)
-                .HasForeignKey(c => c.Category.Id);
+                .HasForeignKey(c => c.CategoryId);
 
             modelBuilder.Entity<CommodityEntity>()
                 .HasOne(c => c.Manufacturer)
                 .WithMany()
-                .HasForeignKey(c => c.Manufacturer.Id);
+                .HasForeignKey(c => c.ManufacturerId);
         }
     }
 }

@@ -17,11 +17,11 @@ class Program
         var categories = new List<CategoryEntity>();
         var Category1 = new CategoryEntity()
         {
-            Title = "emka"
+            Name = "emka"
         };
         var Category2 = new CategoryEntity()
         {
-            Title = "kategorieX"
+            Name = "kategorieX"
         };
         categories.Add(Category1);
         categories.Add(Category2);
@@ -33,7 +33,7 @@ class Program
             Description = "Manu..1 desc",
             Logo = "adresa_loga1",
             CountryOfOrigin = "CZ",
-            //Commodities = Database.Instance.Commodities
+            //Commodity = Database.Instance.Commodity
         };
         var Manufacturer2 = new ManufacturerEntity()
         {
@@ -41,7 +41,7 @@ class Program
             Description = "Manu..2 desc",
             Logo = "adresa_loga2",
             CountryOfOrigin = "CZ",
-            //Commodities = Database.Instance.Commodities
+            //Commodity = Database.Instance.Commodity
         };
         manufacturers.Add(Manufacturer1);
         manufacturers.Add(Manufacturer2);
@@ -59,7 +59,7 @@ class Program
             Rating = new RatingEntity()
             {
                 Stars = "*****",
-                Title = "hodnoceni2",
+                Name = "hodnoceni2",
                 Description = "dobre to je taky"
             }
         }) ;
@@ -77,7 +77,7 @@ class Program
             Rating = new RatingEntity()
             {
                 Stars = "****",
-                Title = "hodnoceni3",
+                Name = "hodnoceni3",
                 Description = "dobre to je"
             }
         });
@@ -95,7 +95,7 @@ class Program
             Rating = new RatingEntity()
             {
                 Stars = "***",
-                Title = "hodnoceni",
+                Name = "hodnoceni",
                 Description = "dobre to je"
             }
     });

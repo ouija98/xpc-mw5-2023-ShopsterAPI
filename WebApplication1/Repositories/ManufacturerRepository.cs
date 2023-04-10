@@ -22,7 +22,7 @@ namespace WebApplication1.Repositories
             }
 
             entity.Id = Guid.NewGuid();
-            Database.Instance.Manufacturers.Add(entity);
+            Database.Instance.Manufacturer.Add(entity);
             Database.Instance.SaveChanges();
 
             return entity.Id;
@@ -31,7 +31,7 @@ namespace WebApplication1.Repositories
         /// <inheritdoc/>
         public ManufacturerEntity GetById(Guid id)
         {
-            return Database.Instance.Manufacturers
+            return Database.Instance.Manufacturer
                 .Include(m => m.Commodities)
                 .SingleOrDefault(m => m.Id == id);
         }
@@ -44,7 +44,7 @@ namespace WebApplication1.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingManufacturer = Database.Instance.Manufacturers
+            var existingManufacturer = Database.Instance.Manufacturer
                 .Include(m => m.Commodities)
                 .Single(m => m.Id == entity.Id);
 
@@ -62,7 +62,7 @@ namespace WebApplication1.Repositories
         /// <inheritdoc/>
         public void Delete(Guid id)
         {
-            var manufacturer = Database.Instance.Manufacturers
+            var manufacturer = Database.Instance.Manufacturer
                 .Include(m => m.Commodities)
                 .Single(m => m.Id == id);
 
@@ -71,14 +71,14 @@ namespace WebApplication1.Repositories
                 commodity.Manufacturer = null;
             }
 
-            Database.Instance.Manufacturers.Remove(manufacturer);
+            Database.Instance.Manufacturer.Remove(manufacturer);
             Database.Instance.SaveChanges();
         }
 
         /// <inheritdoc/>
         public IEnumerable<ManufacturerEntity> GetAll()
         {
-            return Database.Instance.Manufacturers
+            return Database.Instance.Manufacturer
                 .Include(m => m.Commodities)
                 .ToList();
         }

@@ -17,15 +17,16 @@ namespace WebApplication1.Repositories
             }
 
             entity.Id = Guid.NewGuid();
-            Database.Instance.Categories.Add(entity);
-
+            Database.Instance.Category.Add(entity);
+            Database.Instance.SaveChanges();
+            
             return entity.Id;
         }
 
         /// <inheritdoc/>
         public CategoryEntity GetById(Guid id)
         {
-            return Database.Instance.Categories.Single(c => c.Id == id);
+            return Database.Instance.Category.Single(c => c.Id == id);
         }
 
         /// <inheritdoc/>
@@ -36,17 +37,18 @@ namespace WebApplication1.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingCategory = Database.Instance.Categories.Single(c => c.Id == entity.Id);
-            existingCategory.Title = entity.Title;
+            var existingCategory = Database.Instance.Category.Single(c => c.Id == entity.Id);
+            existingCategory.Name = entity.Name;
             existingCategory.Commodities = entity.Commodities;
-
+            Database.Instance.SaveChanges();
+            
             return existingCategory;
         }
 
         /// <inheritdoc/>
         public void Delete(Guid id)
         {
-            var category = Database.Instance.Categories.Single(c => c.Id == id);
+            var category = Database.Instance.Category.Single(c => c.Id == id);
 
             if (category.Commodities != null)
             {
@@ -56,13 +58,14 @@ namespace WebApplication1.Repositories
                 }
             }
 
-            Database.Instance.Categories.Remove(category);
+            Database.Instance.Category.Remove(category);
+            Database.Instance.SaveChanges();
         }
 
         /// <inheritdoc/>
         public IEnumerable<CategoryEntity> GetAll()
         {
-            return Database.Instance.Categories;
+            return Database.Instance.Category;
         }
 
         /// <summary>
@@ -75,6 +78,8 @@ namespace WebApplication1.Repositories
             var category = GetById(categoryId);
             category.Commodities.Add(commodity);
             commodity.Category = category;
+            Database.Instance.SaveChanges();
+            
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace projekt.Repositories;
 /// An internal interface for repository classes that interact with entities that implement the IEntity interface.
 /// </summary>
 /// <typeparam name="TEntity">The type of entity the repository interacts with.</typeparam>
-internal interface IRepository<TEntity> where TEntity : class, IEntity
+public interface IRepository<TEntity> where TEntity : class, IEntity
 {
     /// <summary>
     /// Creates a new entity in the repository.

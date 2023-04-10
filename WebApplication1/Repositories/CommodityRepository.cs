@@ -21,10 +21,10 @@ namespace WebApplication1.Repositories
             foreach (var rating in entity.Ratings)
             {
                 rating.Id = Guid.NewGuid();
-                Database.Instance.Ratings.Add(rating);
+                Database.Instance.Rating.Add(rating);
             }
 
-            Database.Instance.Commodities.Add(entity);
+            Database.Instance.Commodity.Add(entity);
 
             Database.Instance.SaveChanges();
 
@@ -34,13 +34,13 @@ namespace WebApplication1.Repositories
         /// <inheritdoc/>
         public IEnumerable<CommodityEntity> GetAll()
         {
-            return Database.Instance.Commodities.ToList();
+            return Database.Instance.Commodity.ToList();
         }
         
         /// <inheritdoc/>
         public CommodityEntity GetById(Guid id)
         {
-            return Database.Instance.Commodities.Single(s => s.Id == id);
+            return Database.Instance.Commodity.Single(s => s.Id == id);
         }   
 
         /// <inheritdoc/>
@@ -51,15 +51,15 @@ namespace WebApplication1.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingCommodity = Database.Instance.Commodities.Single(s => s.Id == entity.Id);
+            var existingCommodity = Database.Instance.Commodity.Single(s => s.Id == entity.Id);
 
             existingCommodity.Name = entity.Name;
             existingCommodity.Description = entity.Description;
             existingCommodity.Price = entity.Price;
             existingCommodity.Weight = entity.Weight;
             existingCommodity.Quantity = entity.Quantity;
-            existingCommodity.Category = entity.Category;
-            existingCommodity.Manufacturer = entity.Manufacturer;
+            existingCommodity.CategoryId = entity.CategoryId;
+            existingCommodity.ManufacturerId = entity.ManufacturerId;
 
             // remove old ratings that are not present in the updated commodity
             foreach (var oldRating in existingCommodity.Ratings.ToList())
@@ -67,7 +67,7 @@ namespace WebApplication1.Repositories
                 if (!entity.Ratings.Contains(oldRating))
                 {
                     existingCommodity.Ratings.Remove(oldRating);
-                    Database.Instance.Ratings.Remove(oldRating);
+                    Database.Instance.Rating.Remove(oldRating);
                 }
             }
 
@@ -78,7 +78,7 @@ namespace WebApplication1.Repositories
                 {
                     newRating.Id = Guid.NewGuid();
                     existingCommodity.Ratings.Add(newRating);
-                    Database.Instance.Ratings.Add(newRating);
+                    Database.Instance.Rating.Add(newRating);
                 }
             }
 
@@ -90,12 +90,12 @@ namespace WebApplication1.Repositories
         /// <inheritdoc/>
         public void Delete(Guid id)
         {
-            var commodity = Database.Instance.Commodities.Single(s => s.Id == id);
+            var commodity = Database.Instance.Commodity.Single(s => s.Id == id);
             foreach (var rating in commodity.Ratings)
             {
-                Database.Instance.Ratings.Remove(rating);
+                Database.Instance.Rating.Remove(rating);
             }
-            Database.Instance.Commodities.Remove(commodity);
+            Database.Instance.Commodity.Remove(commodity);
 
             Database.Instance.SaveChanges();
         }

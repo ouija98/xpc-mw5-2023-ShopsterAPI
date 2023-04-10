@@ -16,7 +16,7 @@ namespace WebApplication1.Repositories
             }
 
             entity.Id = Guid.NewGuid();
-            Database.Instance.Ratings.Add(entity);
+            Database.Instance.Rating.Add(entity);
             Database.Instance.SaveChanges();
 
             return entity.Id;
@@ -25,7 +25,7 @@ namespace WebApplication1.Repositories
         /// <inheritdoc />
         public RatingEntity GetById(Guid id)
         {
-            return Database.Instance.Ratings.Single(r => r.Id == id);
+            return Database.Instance.Rating.Single(r => r.Id == id);
         }
 
         /// <inheritdoc />
@@ -36,7 +36,7 @@ namespace WebApplication1.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingRating = Database.Instance.Ratings.Single(r => r.Id == entity.Id);
+            var existingRating = Database.Instance.Rating.Single(r => r.Id == entity.Id);
             existingRating.Stars = entity.Stars;
             existingRating.Title = entity.Title;
             existingRating.Description = entity.Description;
@@ -47,14 +47,14 @@ namespace WebApplication1.Repositories
         /// <inheritdoc />
         public void Delete(Guid id)
         {
-            var rating = Database.Instance.Ratings.Single(r => r.Id == id);
-            Database.Instance.Ratings.Remove(rating);
+            var rating = Database.Instance.Rating.Single(r => r.Id == id);
+            Database.Instance.Rating.Remove(rating);
         }
 
         /// <inheritdoc />
         public IEnumerable<RatingEntity> GetAll()
         {
-            return Database.Instance.Ratings;
+            return Database.Instance.Rating;
         }
     }
 }
