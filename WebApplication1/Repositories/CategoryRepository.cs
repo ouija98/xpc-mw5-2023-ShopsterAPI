@@ -49,15 +49,6 @@ namespace WebApplication1.Repositories
         public void Delete(Guid id)
         {
             var category = Database.Instance.Category.Single(c => c.Id == id);
-
-            if (category.Commodities != null)
-            {
-                foreach (var commodity in category.Commodities)
-                {
-                    commodity.Category = null;
-                }
-            }
-
             Database.Instance.Category.Remove(category);
             Database.Instance.SaveChanges();
         }
@@ -77,7 +68,6 @@ namespace WebApplication1.Repositories
         {
             var category = GetById(categoryId);
             category.Commodities.Add(commodity);
-            commodity.Category = category;
             Database.Instance.SaveChanges();
             
         }
@@ -91,7 +81,6 @@ namespace WebApplication1.Repositories
         public bool RemoveCommodity(Guid categoryId, CommodityEntity commodity)
         {
             var category = GetById(categoryId);
-            commodity.Category = null;
             return category.Commodities.Remove(commodity);
         }
     }

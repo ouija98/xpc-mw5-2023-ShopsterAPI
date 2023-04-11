@@ -65,12 +65,6 @@ namespace WebApplication1.Repositories
             var manufacturer = Database.Instance.Manufacturer
                 .Include(m => m.Commodities)
                 .Single(m => m.Id == id);
-
-            foreach (var commodity in manufacturer.Commodities)
-            {
-                commodity.Manufacturer = null;
-            }
-
             Database.Instance.Manufacturer.Remove(manufacturer);
             Database.Instance.SaveChanges();
         }
@@ -83,35 +77,35 @@ namespace WebApplication1.Repositories
                 .ToList();
         }
 
-        /// <summary>
-        /// Adds a commodity to a manufacturer's list of commodities.
-        /// </summary>
-        /// <param name="manufacturerId">The id of the manufacturer.</param>
-        /// <param name="commodity">The commodity to add.</param>
-        public void AddCommodity(Guid manufacturerId, CommodityEntity commodity)
-        {
-            var manufacturer = GetById(manufacturerId);
-            manufacturer.Commodities.Add(commodity);
-            commodity.Manufacturer = manufacturer;
 
-            Database.Instance.SaveChanges();
-        }
-
-        /// <summary>
-        /// Removes a commodity from a manufacturer's list of commodities.
-        /// </summary>
-        /// <param name="manufacturerId">The id of the manufacturer.</param>
-        /// <param name="commodity">The commodity to remove.</param>
-        /// <returns>Returns true if the commodity was removed; false otherwise.</returns>
-        public bool RemoveCommodity(Guid manufacturerId, CommodityEntity commodity)
-        {
-            var manufacturer = GetById(manufacturerId);
-            commodity.Manufacturer = null;
-
-            bool result = manufacturer.Commodities.Remove(commodity);
-            Database.Instance.SaveChanges();
-
-            return result;
-        }
+        //TODO remove if sure that  its not going to be used
+        // /// <summary>
+        // /// Adds a commodity to a manufacturer's list of commodities.
+        // /// </summary>
+        // /// <param name="manufacturerId">The id of the manufacturer.</param>
+        // /// <param name="commodity">The commodity to add.</param>
+        // public void AddCommodity(Guid manufacturerId, CommodityEntity commodity)
+        // {
+        //     var manufacturer = GetById(manufacturerId);
+        //     manufacturer.Commodities.Add(commodity);
+        //     commodity.Manufacturer = manufacturer;
+        //
+        //     Database.Instance.SaveChanges();
+        // }
+        //
+        // /// <summary>
+        // /// Removes a commodity from a manufacturer's list of commodities.
+        // /// </summary>
+        // /// <param name="manufacturerId">The id of the manufacturer.</param>
+        // /// <param name="commodity">The commodity to remove.</param>
+        // /// <returns>Returns true if the commodity was removed; false otherwise.</returns>
+        // public bool RemoveCommodity(Guid manufacturerId, CommodityEntity commodity)
+        // {
+        //     var manufacturer = GetById(manufacturerId);
+        //     bool result = manufacturer.Commodities.Remove(commodity);
+        //     Database.Instance.SaveChanges();
+        //
+        //     return result;
+        // }
     }
 }

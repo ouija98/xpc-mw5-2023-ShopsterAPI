@@ -56,16 +56,7 @@ namespace WebApplication1
 
             modelBuilder.Entity<RatingEntity>()
                 .HasKey(s => s.Id);
-
-            modelBuilder.Entity<CommodityEntity>()
-                .HasOne(c => c.Category)
-                .WithMany(c => c.Commodities)
-                .HasForeignKey(c => c.CategoryId);
-
-            modelBuilder.Entity<CommodityEntity>()
-                .HasOne(c => c.Manufacturer)
-                .WithMany()
-                .HasForeignKey(c => c.ManufacturerId);
+            
         }
     }
 }

@@ -59,15 +59,14 @@ namespace WebApplication1.Controllers
         /// <param name="id">The identifier of the category to update.</param>
         /// <param name="category">The updated category.</param>
         [HttpPut("Update a category by Id")]
-        public IActionResult Update(Guid id, [FromBody] CategoryEntity category)
-        //TODO zistit ako ako sa ma dostat category do body
+        public IActionResult Update([FromBody] CategoryEntity category)
         {
-            if (category == null || category.Id != id)
+            if (category == null)
             {
                 return BadRequest();
             }
 
-            var existingCategory = _categoryRepository.GetById(id);
+            var existingCategory = _categoryRepository.GetById(category.Id);
 
             if (existingCategory == null)
             {
