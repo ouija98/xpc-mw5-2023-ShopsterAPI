@@ -3,6 +3,6 @@
 varianta A
 
 Bartkova Tereza
-Szuc Martin
+Szüč Martin
 Bartash Roman
 
