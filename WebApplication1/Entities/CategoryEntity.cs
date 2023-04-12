@@ -1,10 +1,7 @@
-﻿
-
-namespace projekt.Entities;
+﻿namespace WebApplication1.Entities;
 
 public record CategoryEntity : EntityBase
 {
-    public Guid CategoryId {get; set;}
     public string? Name { get; set; }
     public List<CommodityEntity> Commodities { get; set; }
 }

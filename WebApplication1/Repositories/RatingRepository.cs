@@ -1,6 +1,4 @@
-﻿using projekt;
-using projekt.Entities;
-using projekt.Repositories;
+﻿using WebApplication1.Entities;
 
 namespace WebApplication1.Repositories
 {
@@ -41,6 +39,7 @@ namespace WebApplication1.Repositories
             existingRating.Title = entity.Title;
             existingRating.Description = entity.Description;
 
+            Database.Instance.SaveChanges();
             return existingRating;
         }
 
@@ -49,6 +48,7 @@ namespace WebApplication1.Repositories
         {
             var rating = Database.Instance.Rating.Single(r => r.Id == id);
             Database.Instance.Rating.Remove(rating);
+            Database.Instance.SaveChanges();
         }
 
         /// <inheritdoc />

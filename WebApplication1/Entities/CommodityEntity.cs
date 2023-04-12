@@ -1,33 +1,65 @@
-﻿
-
-namespace projekt.Entities;
-
-public record CommodityEntity : EntityBase
+﻿namespace WebApplication1.Entities
 {
-    public Guid Id {get; set;}
-    
-    public string? Name { get; set; }
+    public record CommodityEntity : EntityBase
+    {
+        /// <summary>
+        /// Gets or sets the name of the commodity.
+        /// </summary>
+        public string? Name { get; set; }
 
-    public string? Picture { get; set; }
+        /// <summary>
+        /// Gets or sets the picture of the commodity.
+        /// </summary>
+        public string? Picture { get; set; }
 
-    public string? Description { get; set; }
+        /// <summary>
+        /// Gets or sets the description of the commodity.
+        /// </summary>
+        public string? Description { get; set; }
 
-    public decimal Price { get; set; }
+        /// <summary>
+        /// Gets or sets the price of the commodity.
+        /// </summary>
+        public decimal Price { get; set; }
 
-    public float Weight { get; set; }
+        /// <summary>
+        /// Gets or sets the weight of the commodity.
+        /// </summary>
+        public float Weight { get; set; }
 
-    public int Quantity { get; set; }
+        /// <summary>
+        /// Gets or sets the quantity of the commodity.
+        /// </summary>
+        public int Quantity { get; set; }
 
-    public Guid? CategoryId { get; set; }  // foreign key property
-    
-    public virtual CategoryEntity Category { get; set; }
+        /// <summary>
+        /// Gets or sets the category entity of the commodity.
+        /// </summary>
+        public CategoryEntity? Category { get; set; }
 
-    public Guid? ManufacturerId { get; set; }  // foreign key property
-    
-    public ManufacturerEntity Manufacturer { get; set; }
-    
-    public int Stars { set; get; }
-    
-    public List<RatingEntity>? Ratings { get; set; }
-    
+        /// <summary>
+        /// Gets or sets the category entity ID of the commodity.
+        /// </summary>
+        public Guid? CategoryId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the manufacturer entity ID of the commodity.
+        /// </summary>
+        public Guid? ManufacturerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the manufacturer entity of the commodity.
+        /// </summary>
+        public ManufacturerEntity? Manufacturer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the star rating of the commodity.
+        /// </summary>
+        public int Stars { set; get; }
+
+        /// <summary>
+        /// Gets or sets the list of rating entities for the commodity.
+        /// </summary>
+        public List<RatingEntity>? Ratings { get; set; }
+    }
 }

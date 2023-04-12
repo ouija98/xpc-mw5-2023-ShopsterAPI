@@ -1,5 +1,4 @@
-﻿using projekt.Entities;
-using projekt.Repositories;
+﻿using WebApplication1.Entities;
 
 namespace WebApplication1.Repositories
 {
@@ -19,7 +18,7 @@ namespace WebApplication1.Repositories
             entity.Id = Guid.NewGuid();
             Database.Instance.Category.Add(entity);
             Database.Instance.SaveChanges();
-            
+
             return entity.Id;
         }
 
@@ -41,7 +40,7 @@ namespace WebApplication1.Repositories
             existingCategory.Name = entity.Name;
             existingCategory.Commodities = entity.Commodities;
             Database.Instance.SaveChanges();
-            
+
             return existingCategory;
         }
 
@@ -69,7 +68,6 @@ namespace WebApplication1.Repositories
             var category = GetById(categoryId);
             category.Commodities.Add(commodity);
             Database.Instance.SaveChanges();
-            
         }
 
         /// <summary>

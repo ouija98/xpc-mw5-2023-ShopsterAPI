@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using projekt.Entities;
-using projekt.Repositories;
+using WebApplication1.Entities;
 
 namespace WebApplication1.Repositories
 {
@@ -36,12 +35,12 @@ namespace WebApplication1.Repositories
         {
             return Database.Instance.Commodity.ToList();
         }
-        
+
         /// <inheritdoc/>
         public CommodityEntity GetById(Guid id)
         {
             return Database.Instance.Commodity.Single(s => s.Id == id);
-        }   
+        }
 
         /// <inheritdoc/>
         public CommodityEntity Update(CommodityEntity entity)
@@ -58,8 +57,8 @@ namespace WebApplication1.Repositories
             existingCommodity.Price = entity.Price;
             existingCommodity.Weight = entity.Weight;
             existingCommodity.Quantity = entity.Quantity;
-            existingCommodity.CategoryId = entity.CategoryId;
-            existingCommodity.ManufacturerId = entity.ManufacturerId;
+            existingCommodity.Category = entity.Category;
+            existingCommodity.Manufacturer = entity.Manufacturer;
 
             // remove old ratings that are not present in the updated commodity
             foreach (var oldRating in existingCommodity.Ratings.ToList())
@@ -95,6 +94,7 @@ namespace WebApplication1.Repositories
             {
                 Database.Instance.Rating.Remove(rating);
             }
+
             Database.Instance.Commodity.Remove(commodity);
 
             Database.Instance.SaveChanges();

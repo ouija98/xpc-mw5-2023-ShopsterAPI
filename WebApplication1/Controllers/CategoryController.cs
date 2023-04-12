@@ -1,9 +1,7 @@
 ﻿using Bogus;
 using Microsoft.AspNetCore.Mvc;
-using projekt.Entities;
-using projekt.Repositories;
-using System;
-using System.Collections.Generic;
+using WebApplication1.Entities;
+using WebApplication1.Repositories;
 
 namespace WebApplication1.Controllers
 {
@@ -76,7 +74,6 @@ namespace WebApplication1.Controllers
             existingCategory.Name = category.Name;
 
             _categoryRepository.Update(existingCategory);
-            Database.Instance.SaveChanges();
             return NoContent();
         }
 

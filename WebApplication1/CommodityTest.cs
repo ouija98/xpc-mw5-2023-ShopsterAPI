@@ -1,6 +1,4 @@
-﻿
-
-using projekt.Entities;
+﻿using WebApplication1.Entities;
 
 namespace WebApplication1;
 

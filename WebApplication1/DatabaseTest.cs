@@ -1,8 +1,4 @@
-﻿using projekt.Entities;
-using projekt.Repositories;
-
-
-namespace projekt;
+﻿namespace WebApplication1;
 
 /*
 class Program

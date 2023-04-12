@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using projekt.Entities;
-using projekt.Repositories;
 using WebApplication1;
+using WebApplication1.Entities;
 using WebApplication1.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +16,10 @@ builder.Services.AddSwaggerGen();
 
 // Add repository dependency
 builder.Services.AddTransient<IRepository<CategoryEntity>, CategoryRepository>();
+builder.Services.AddTransient<IRepository<ManufacturerEntity>, ManufacturerRepository>();
+builder.Services.AddTransient<IRepository<RatingEntity>, RatingRepository>();
+builder.Services.AddTransient<IRepository<CommodityEntity>, CommodityRepository>();
+
 
 // Add DbContext dependency
 builder.Services.AddDbContext<Database>(options =>

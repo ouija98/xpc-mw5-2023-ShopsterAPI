@@ -1,10 +1,5 @@
-﻿using projekt;
-using projekt.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using projekt.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication1.Entities;
 
 namespace WebApplication1.Repositories
 {
@@ -76,36 +71,5 @@ namespace WebApplication1.Repositories
                 .Include(m => m.Commodities)
                 .ToList();
         }
-
-
-        //TODO remove if sure that  its not going to be used
-        // /// <summary>
-        // /// Adds a commodity to a manufacturer's list of commodities.
-        // /// </summary>
-        // /// <param name="manufacturerId">The id of the manufacturer.</param>
-        // /// <param name="commodity">The commodity to add.</param>
-        // public void AddCommodity(Guid manufacturerId, CommodityEntity commodity)
-        // {
-        //     var manufacturer = GetById(manufacturerId);
-        //     manufacturer.Commodities.Add(commodity);
-        //     commodity.Manufacturer = manufacturer;
-        //
-        //     Database.Instance.SaveChanges();
-        // }
-        //
-        // /// <summary>
-        // /// Removes a commodity from a manufacturer's list of commodities.
-        // /// </summary>
-        // /// <param name="manufacturerId">The id of the manufacturer.</param>
-        // /// <param name="commodity">The commodity to remove.</param>
-        // /// <returns>Returns true if the commodity was removed; false otherwise.</returns>
-        // public bool RemoveCommodity(Guid manufacturerId, CommodityEntity commodity)
-        // {
-        //     var manufacturer = GetById(manufacturerId);
-        //     bool result = manufacturer.Commodities.Remove(commodity);
-        //     Database.Instance.SaveChanges();
-        //
-        //     return result;
-        // }
     }
 }

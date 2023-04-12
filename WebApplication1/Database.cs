@@ -1,5 +1,5 @@
-using projekt.Entities;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Entities;
 
 namespace WebApplication1
 {
@@ -15,14 +15,15 @@ namespace WebApplication1
                 {
                     _instance = new Database();
                 }
+
                 return _instance;
             }
         }
-        
+
         public Database(DbContextOptions<Database> options) : base(options)
         {
         }
-        
+
         private Database()
         {
             // Private constructor to prevent instantiation from outside the class.
@@ -56,7 +57,6 @@ namespace WebApplication1
 
             modelBuilder.Entity<RatingEntity>()
                 .HasKey(s => s.Id);
-            
         }
     }
 }

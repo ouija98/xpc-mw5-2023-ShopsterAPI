@@ -1,6 +1,6 @@
-﻿using projekt.Entities;
+﻿using WebApplication1.Entities;
 
-namespace projekt.Repositories;
+namespace WebApplication1.Repositories;
 
 /// <summary>
 /// An internal interface for repository classes that interact with entities that implement the IEntity interface.
@@ -34,7 +34,7 @@ public interface IRepository<TEntity> where TEntity : class, IEntity
     /// </summary>
     /// <param name="id">The unique identifier of the entity to delete.</param>
     void Delete(Guid id);
-    
+
     /// <summary>
     /// Gets all entities of the specified type from the repository.
     /// </summary>
