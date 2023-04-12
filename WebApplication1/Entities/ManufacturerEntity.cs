@@ -4,6 +4,8 @@ namespace projekt.Entities;
 
 public record ManufacturerEntity : EntityBase
 {
+    public Guid ManufacturerId {get; set;}
+    
     public string? Name { get; set; }
 
     public string? Description { get; set; }
@@ -12,6 +14,6 @@ public record ManufacturerEntity : EntityBase
 
     public string? CountryOfOrigin { get; set; }
 
-    public ICollection<CommodityEntity>? Commodities { get; set; }
+    public List<CommodityEntity> Commodities { get; set; }
     
 }
