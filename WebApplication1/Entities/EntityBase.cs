@@ -3,7 +3,7 @@
 /// <summary>
 /// Base class for entities that implements IEntity interface
 /// </summary>
-public abstract record class EntityBase : IEntity
+public abstract class EntityBase : IEntity
 {
     /// <summary>
     /// Gets or sets the unique identifier of the entity.

@@ -1,21 +1,21 @@
 ﻿namespace WebApplication1.Entities
 {
-    public record CommodityEntity : EntityBase
+    public class CommodityEntity : EntityBase
     {
         /// <summary>
         /// Gets or sets the name of the commodity.
         /// </summary>
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the picture of the commodity.
         /// </summary>
-        public string? Picture { get; set; }
+        public string Picture { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the commodity.
         /// </summary>
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the price of the commodity.
@@ -35,22 +35,22 @@
         /// <summary>
         /// Gets or sets the category entity of the commodity.
         /// </summary>
-        public CategoryEntity? Category { get; set; }
+        public CategoryEntity Category { get; set; }
 
         /// <summary>
         /// Gets or sets the category entity ID of the commodity.
         /// </summary>
-        public Guid? CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
 
         /// <summary>
         /// Gets or sets the manufacturer entity ID of the commodity.
         /// </summary>
-        public Guid? ManufacturerId { get; set; }
+        public Guid ManufacturerId { get; set; }
 
         /// <summary>
         /// Gets or sets the manufacturer entity of the commodity.
         /// </summary>
-        public ManufacturerEntity? Manufacturer { get; set; }
+        public ManufacturerEntity Manufacturer { get; set; }
 
         /// <summary>
         /// Gets or sets the star rating of the commodity.
@@ -60,6 +60,6 @@
         /// <summary>
         /// Gets or sets the list of rating entities for the commodity.
         /// </summary>
-        public List<RatingEntity>? Ratings { get; set; }
+        public ICollection<RatingEntity>? Ratings { get; set; }
     }
 }

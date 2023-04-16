@@ -1,7 +1,7 @@
 ﻿namespace WebApplication1.Entities;
 
-public record CategoryEntity : EntityBase
+public class CategoryEntity : EntityBase
 {
-    public string? Name { get; set; }
-    public List<CommodityEntity> Commodities { get; set; }
+    public string Name { get; set; }
+    public ICollection<CommodityEntity>? Commodities { get; set; }
 }
