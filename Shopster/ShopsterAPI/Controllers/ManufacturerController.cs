@@ -1,59 +1,47 @@
-﻿using Bogus;
-using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Entities;
-using WebApplication1.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shopster.Entities;
+using Shopster.Shopster.DAL.Repositories;
 
-namespace WebApplication1.Controllers
+namespace Shopster.ShopsterAPI.Controllers
 {
-    /// <summary>
-    /// Controller for managing manufacturers.
-    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class ManufacturerController : ControllerBase
     {
+        private readonly ILogger<ManufacturerController> _logger;
         private readonly IRepository<ManufacturerEntity> _manufacturerRepository;
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="ManufacturerController"/> class.
-        /// </summary>
-        /// <param name="manufacturerRepository">The repository for managing manufacturers.</param>
-        public ManufacturerController(IRepository<ManufacturerEntity> manufacturerRepository)
+        public ManufacturerController(ILogger<ManufacturerController> logger,
+            IRepository<ManufacturerEntity> manufacturerRepository)
         {
+            _logger = logger;
             _manufacturerRepository = manufacturerRepository;
         }
 
-        /// <summary>
-        /// Retrieves all manufacturers.
-        /// </summary>
-        /// <returns>An enumerable collection of all manufacturers.</returns>
         [HttpGet]
         public IEnumerable<ManufacturerEntity> Get()
         {
+            _logger.LogInformation("Retrieving all manufacturers");
             return _manufacturerRepository.GetAll();
         }
 
-        /// <summary>
-        /// Retrieves a manufacturer by its identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the manufacturer to retrieve.</param>
-        /// <returns>The manufacturer with the specified identifier.</returns>
         [HttpGet("{id}")]
         public ActionResult<ManufacturerEntity> GetById(Guid id)
         {
+            _logger.LogInformation("Retrieving manufacturer by ID {id}", id);
             var manufacturer = _manufacturerRepository.GetById(id);
 
             if (manufacturer == null)
             {
+                _logger.LogInformation("Manufacturer with ID {id} not found", id);
                 return NotFound();
             }
 
             return manufacturer;
         }
 
-
         [HttpPost]
-        public IActionResult AddFromBody([FromBody] ManufacturerEntity manufacturer)
+        public IActionResult Add([FromBody] ManufacturerEntity manufacturer)
         {
             if (manufacturer == null)
             {
@@ -64,23 +52,18 @@ namespace WebApplication1.Controllers
             {
                 // Insert the manufacturer into the database
                 manufacturer.Id = Guid.NewGuid();
-                Database.Instance.Add(manufacturer);
-                Database.Instance.SaveChanges();
+                _manufacturerRepository.Create(manufacturer);
+                _logger.LogInformation("Manufacturer with ID {id} created", manufacturer.Id);
                 return CreatedAtAction(nameof(GetById), new { id = manufacturer.Id }, manufacturer);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error inserting the manufacturer");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"Error inserting the manufacturer: {ex.Message}");
             }
         }
 
-
-        /// <summary>
-        /// Updates a manufacturer by its identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the manufacturer to update.</param>
-        /// <param name="manufacturer">The updated manufacturer.</param>
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] ManufacturerEntity manufacturer)
         {
@@ -93,6 +76,7 @@ namespace WebApplication1.Controllers
 
             if (existingManufacturer == null)
             {
+                _logger.LogInformation("Manufacturer with ID {id} not found", id);
                 return NotFound();
             }
 
@@ -102,26 +86,24 @@ namespace WebApplication1.Controllers
             existingManufacturer.CountryOfOrigin = manufacturer.CountryOfOrigin;
 
             _manufacturerRepository.Update(existingManufacturer);
+            _logger.LogInformation("Manufacturer with ID {id} updated", id);
             return NoContent();
         }
 
-        /// <summary>
-        /// Deletes a manufacturer by its identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the manufacturer to delete.</param>
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             var existingManufacturer = _manufacturerRepository.GetById(id);
+
             if (existingManufacturer == null)
             {
+                _logger.LogInformation("Manufacturer with ID {id} not found", id);
                 return NotFound();
             }
 
             _manufacturerRepository.Delete(id);
+            _logger.LogInformation("Manufacturer with ID {id} deleted", id);
             return NoContent();
         }
-
-
     }
 }

@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApplication1;
+using Shopster;
+using Shopster.Shopster.DAL.AppDbContext;
 
 #nullable disable
 
-namespace WebApplication1.Migrations
+namespace Shopster.Migrations
 {
-    [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AppDbContext))]
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -22,13 +23,15 @@ namespace WebApplication1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("projekt.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.CategoryEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -36,34 +39,34 @@ namespace WebApplication1.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("projekt.Entities.CommodityEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.CommodityEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ManufacturerId")
+                    b.Property<Guid>("ManufacturerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Stars")
                         .HasColumnType("int");
 
                     b.Property<float>("Weight")
@@ -78,22 +81,26 @@ namespace WebApplication1.Migrations
                     b.ToTable("Commodity");
                 });
 
-            modelBuilder.Entity("projekt.Entities.ManufacturerEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.ManufacturerEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CountryOfOrigin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Logo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -101,7 +108,7 @@ namespace WebApplication1.Migrations
                     b.ToTable("Manufacturer");
                 });
 
-            modelBuilder.Entity("projekt.Entities.RatingEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.RatingEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,12 +118,14 @@ namespace WebApplication1.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Stars")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -126,41 +135,47 @@ namespace WebApplication1.Migrations
                     b.ToTable("Rating");
                 });
 
-            modelBuilder.Entity("projekt.Entities.CommodityEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.CommodityEntity", b =>
                 {
-                    b.HasOne("projekt.Entities.CategoryEntity", "Category")
+                    b.HasOne("Shopster.Entities.CategoryEntity", "Category")
                         .WithMany("Commodities")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("projekt.Entities.ManufacturerEntity", "Manufacturer")
+                    b.HasOne("Shopster.Entities.ManufacturerEntity", "Manufacturer")
                         .WithMany("Commodities")
-                        .HasForeignKey("ManufacturerId");
+                        .HasForeignKey("ManufacturerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
                     b.Navigation("Manufacturer");
                 });
 
-            modelBuilder.Entity("projekt.Entities.RatingEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.RatingEntity", b =>
                 {
-                    b.HasOne("projekt.Entities.CommodityEntity", null)
+                    b.HasOne("Shopster.Entities.CommodityEntity", "Commodity")
                         .WithMany("Ratings")
                         .HasForeignKey("CommodityEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Commodity");
                 });
 
-            modelBuilder.Entity("projekt.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("Commodities");
                 });
 
-            modelBuilder.Entity("projekt.Entities.CommodityEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.CommodityEntity", b =>
                 {
                     b.Navigation("Ratings");
                 });
 
-            modelBuilder.Entity("projekt.Entities.ManufacturerEntity", b =>
+            modelBuilder.Entity("Shopster.Entities.ManufacturerEntity", b =>
                 {
                     b.Navigation("Commodities");
                 });

@@ -1,13 +1,9 @@
-﻿using Bogus;
-using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Entities;
-using WebApplication1.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shopster.Entities;
+using Shopster.Shopster.DAL.Repositories;
 
-namespace WebApplication1.Controllers
+namespace Shopster.ShopsterAPI.Controllers
 {
-    /// <summary>
-    /// Controller for managing commodities.
-    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class CommodityController : ControllerBase
@@ -15,81 +11,65 @@ namespace WebApplication1.Controllers
         private readonly ILogger<CommodityController> _logger;
         private readonly IRepository<CommodityEntity> _commodityRepository;
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="CommodityController"/> class.
-        /// </summary>
-        /// <param name="logger">The logger instance.</param>
-        /// <param name="commodityRepository">The repository for managing commodities.</param>
-        public CommodityController(ILogger<CommodityController> logger,
-            IRepository<CommodityEntity> commodityRepository)
+        public CommodityController(ILogger<CommodityController> logger, IRepository<CommodityEntity> commodityRepository)
         {
             _logger = logger;
             _commodityRepository = commodityRepository;
         }
 
-        /// <summary>
-        /// Retrieves all commodities.
-        /// </summary>
-        /// <returns>An enumerable collection of all commodities.</returns>
         [HttpGet]
         public IEnumerable<CommodityEntity> Get()
         {
+            _logger.LogInformation("Getting all commodities");
             return _commodityRepository.GetAll();
         }
 
-        /// <summary>
-        /// Retrieves a commodity by its identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the commodity to retrieve.</param>
-        /// <returns>The commodity with the specified identifier.</returns>
         [HttpGet("{id}")]
         public ActionResult<CommodityEntity> GetById(Guid id)
         {
+            _logger.LogInformation($"Getting commodity with id {id}");
             var commodity = _commodityRepository.GetById(id);
 
             if (commodity == null)
             {
+                _logger.LogWarning($"Commodity with id {id} not found");
                 return NotFound();
             }
 
             return commodity;
         }
 
-
-
         [HttpPost]
-        public IActionResult AddFromBody([FromBody] CommodityEntity commodity)
+        public IActionResult Add([FromBody] CommodityEntity commodity)
         {
             if (commodity == null)
             {
+                _logger.LogError("Commodity object is null");
                 return BadRequest("The commodity object is null");
             }
 
             try
             {
+                _logger.LogInformation($"Inserting new commodity with name {commodity.Name}");
                 // Insert the commodity into the database
                 commodity.Id = Guid.NewGuid();
-                Database.Instance.Add(commodity);
-                Database.Instance.SaveChanges();
+                _commodityRepository.Create(commodity);
                 return CreatedAtAction(nameof(GetById), new { id = commodity.Id }, commodity);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error inserting the commodity: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"Error inserting the commodity: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// Updates a commodity by its identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the commodity to update.</param>
-        /// <param name="commodity">The updated commodity.</param>
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] CommodityEntity commodity)
         {
             if (commodity == null || commodity.Id != id)
             {
+                _logger.LogError($"Invalid commodity object or commodity ID: {id}");
                 return BadRequest();
             }
 
@@ -97,6 +77,7 @@ namespace WebApplication1.Controllers
 
             if (existingCommodity == null)
             {
+                _logger.LogWarning($"Commodity with id {id} not found");
                 return NotFound();
             }
 
@@ -108,18 +89,13 @@ namespace WebApplication1.Controllers
             existingCommodity.Quantity = commodity.Quantity;
             existingCommodity.Category = commodity.Category;
             existingCommodity.Manufacturer = commodity.Manufacturer;
-            //existingCommodity.Ratings = commodity.Ratings;
 
+            _logger.LogInformation($"Updating commodity with id {id}");
             _commodityRepository.Update(existingCommodity);
-            Database.Instance.SaveChanges();
 
             return NoContent();
         }
 
-        /// <summary>
-        /// Deletes a commodity by its identifier.
-        /// </summary>
-        /// <param name="id">The identifier of the commodity to delete.</param>
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
@@ -127,11 +103,12 @@ namespace WebApplication1.Controllers
 
             if (existingCommodity == null)
             {
+                _logger.LogWarning($"Commodity with id {id} not found");
                 return NotFound();
             }
 
+            _logger.LogInformation($"Deleting commodity with id {id}");
             _commodityRepository.Delete(id);
-            Database.Instance.SaveChanges();
 
             return NoContent();
         }

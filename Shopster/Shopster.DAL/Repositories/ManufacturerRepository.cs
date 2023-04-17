@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication1.Entities;
+using Shopster.Entities;
 
-namespace WebApplication1.Repositories
+namespace Shopster.Shopster.DAL.Repositories
 {
-    /// <summary>
-    /// The repository for managing <see cref="ManufacturerEntity"/> entities.
-    /// </summary>
     public class ManufacturerRepository : IRepository<ManufacturerEntity>
     {
-        /// <inheritdoc/>
+        private readonly AppDbContext.AppDbContext _context;
+
+        public ManufacturerRepository(AppDbContext.AppDbContext context)
+        {
+            _context = context;
+        }
+
         public Guid Create(ManufacturerEntity entity)
         {
             if (entity == null)
@@ -17,21 +20,26 @@ namespace WebApplication1.Repositories
             }
 
             entity.Id = Guid.NewGuid();
-            Database.Instance.Manufacturer.Add(entity);
-            Database.Instance.SaveChanges();
+            _context.Manufacturer.Add(entity);
+            _context.SaveChanges();
 
             return entity.Id;
         }
 
-        /// <inheritdoc/>
         public ManufacturerEntity GetById(Guid id)
         {
-            return Database.Instance.Manufacturer
+            var manufacturer = _context.Manufacturer
                 .Include(m => m.Commodities)
-                .SingleOrDefault(m => m.Id == id);
+                .Single(m => m.Id == id);
+
+            if (manufacturer == null)
+            {
+                throw new ArgumentException($"No entity with id {id} exists in the database.", nameof(id));
+            }
+
+            return manufacturer;
         }
 
-        /// <inheritdoc/>
         public ManufacturerEntity Update(ManufacturerEntity entity)
         {
             if (entity == null)
@@ -39,7 +47,7 @@ namespace WebApplication1.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingManufacturer = Database.Instance.Manufacturer
+            var existingManufacturer = _context.Manufacturer
                 .Include(m => m.Commodities)
                 .Single(m => m.Id == entity.Id);
 
@@ -47,27 +55,25 @@ namespace WebApplication1.Repositories
             existingManufacturer.Description = entity.Description;
             existingManufacturer.Logo = entity.Logo;
             existingManufacturer.CountryOfOrigin = entity.CountryOfOrigin;
-            //existingManufacturer.Commodities = entity.Commodities;
+            existingManufacturer.Commodities = entity.Commodities;
 
-            Database.Instance.SaveChanges();
+            _context.SaveChanges();
 
             return existingManufacturer;
         }
 
-        /// <inheritdoc/>
         public void Delete(Guid id)
         {
-            var manufacturer = Database.Instance.Manufacturer
+            var manufacturer = _context.Manufacturer
                 .Include(m => m.Commodities)
                 .Single(m => m.Id == id);
-            Database.Instance.Manufacturer.Remove(manufacturer);
-            Database.Instance.SaveChanges();
+            _context.Manufacturer.Remove(manufacturer);
+            _context.SaveChanges();
         }
 
-        /// <inheritdoc/>
         public IEnumerable<ManufacturerEntity> GetAll()
         {
-            return Database.Instance.Manufacturer
+            return _context.Manufacturer
                 .Include(m => m.Commodities)
                 .ToList();
         }

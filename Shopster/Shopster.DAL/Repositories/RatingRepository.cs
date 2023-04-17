@@ -1,60 +1,64 @@
-﻿using WebApplication1.Entities;
+﻿using Shopster.Entities;
 
-namespace WebApplication1.Repositories
+namespace Shopster.Shopster.DAL.Repositories
 {
-    /// <inheritdoc />
     public class RatingRepository : IRepository<RatingEntity>
     {
-        /// <inheritdoc />
+        private readonly AppDbContext.AppDbContext _context;
+
+        public RatingRepository(AppDbContext.AppDbContext context)
+        {
+            _context = context;
+        }
+
         public Guid Create(RatingEntity entity)
         {
-            if (entity is null)
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
 
             entity.Id = Guid.NewGuid();
-            Database.Instance.Rating.Add(entity);
-            Database.Instance.SaveChanges();
+            _context.Rating.Add(entity);
+            _context.SaveChanges();
 
             return entity.Id;
         }
 
-        /// <inheritdoc />
         public RatingEntity GetById(Guid id)
         {
-            return Database.Instance.Rating.Single(r => r.Id == id);
+            return _context.Rating.Single(r => r.Id == id);
         }
 
-        /// <inheritdoc />
         public RatingEntity Update(RatingEntity entity)
         {
-            if (entity is null)
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingRating = Database.Instance.Rating.Single(r => r.Id == entity.Id);
+            var existingRating = _context.Rating.Single(r => r.Id == entity.Id);
             existingRating.Stars = entity.Stars;
             existingRating.Title = entity.Title;
             existingRating.Description = entity.Description;
 
-            Database.Instance.SaveChanges();
+            _context.SaveChanges();
             return existingRating;
         }
 
-        /// <inheritdoc />
         public void Delete(Guid id)
         {
-            var rating = Database.Instance.Rating.Single(r => r.Id == id);
-            Database.Instance.Rating.Remove(rating);
-            Database.Instance.SaveChanges();
+            var rating = _context.Rating.Single(r => r.Id == id);
+            if (rating != null)
+            {
+                _context.Rating.Remove(rating);
+                _context.SaveChanges();
+            }
         }
 
-        /// <inheritdoc />
         public IEnumerable<RatingEntity> GetAll()
         {
-            return Database.Instance.Rating;
+            return _context.Rating.ToList();
         }
     }
 }
