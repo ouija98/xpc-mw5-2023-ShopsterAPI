@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
         /// Retrieves all the ratings.
         /// </summary>
         /// <returns>The list of all the ratings.</returns>
-        [HttpGet("Get all ratings")]
+        [HttpGet]
         public IEnumerable<RatingEntity> GetAll()
         {
             return _ratingRepository.GetAll();
@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="id">The identifier of the rating to retrieve.</param>
         /// <returns>The rating with the specified identifier.</returns>
-        [HttpGet("Get a rating by Id")]
+        [HttpGet("{id}")]
         public ActionResult<RatingEntity> GetById(Guid id)
         {
             var rating = _ratingRepository.GetById(id);
@@ -51,12 +51,37 @@ namespace WebApplication1.Controllers
             return rating;
         }
 
+
+        [HttpPost]
+        public IActionResult AddFromBody([FromBody] RatingEntity rating)
+        {
+            if (rating == null)
+            {
+                return BadRequest("The rating object is null");
+            }
+
+            try
+            {
+                // Insert the rating into the database
+                rating.Id = Guid.NewGuid();
+                Database.Instance.Add(rating);
+                Database.Instance.SaveChanges();
+                return CreatedAtAction(nameof(GetById), new { id = rating.Id }, rating);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error inserting the rating: {ex.Message}");
+            }
+        }
+
+
         /// <summary>
         /// Updates a rating by its identifier.
         /// </summary>
         /// <param name="rating">The rating to update.</param>
         /// <returns>No content.</returns>
-        [HttpPut("Update a rating by Id")]
+        [HttpPut("{id}")]
         public IActionResult Update([FromBody] RatingEntity rating)
         {
             if (rating == null)
@@ -85,7 +110,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="id">The identifier of the rating to delete.</param>
         /// <returns>No content.</returns>
-        [HttpDelete("Delete a rating by Id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             //TODO TRY
@@ -101,25 +126,6 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Adds a randomly generated rating.
-        /// </summary>
-        /// <returns>The created rating.</returns>
-        [HttpPost("Add a randomly generated rating")]
-        public ActionResult<RatingEntity> Add()
-        {
-            var faker = new Faker<RatingEntity>()
-                .RuleFor(p => p.Id, f => f.Random.Guid())
-                .RuleFor(p => p.Stars, f => f.Random.Number(1, 5))
-                .RuleFor(p => p.Title, f => f.Lorem.Word())
-                .RuleFor(p => p.Description, f => f.Lorem.Paragraph())
-                .RuleFor(p => p.CommodityEntityId, f => f.Random.Guid());
 
-            var newRating = faker.Generate();
-
-            _ratingRepository.Create(newRating);
-
-            return CreatedAtAction(nameof(GetById), new { id = newRating.Id }, newRating);
-        }
     }
 }

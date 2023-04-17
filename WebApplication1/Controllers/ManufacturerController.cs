@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
         /// Retrieves all manufacturers.
         /// </summary>
         /// <returns>An enumerable collection of all manufacturers.</returns>
-        [HttpGet("Get all manufacturers")]
+        [HttpGet]
         public IEnumerable<ManufacturerEntity> Get()
         {
             return _manufacturerRepository.GetAll();
@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="id">The identifier of the manufacturer to retrieve.</param>
         /// <returns>The manufacturer with the specified identifier.</returns>
-        [HttpGet("Get a manufacturer by Id")]
+        [HttpGet("{id}")]
         public ActionResult<ManufacturerEntity> GetById(Guid id)
         {
             var manufacturer = _manufacturerRepository.GetById(id);
@@ -51,12 +51,37 @@ namespace WebApplication1.Controllers
             return manufacturer;
         }
 
+
+        [HttpPost]
+        public IActionResult AddFromBody([FromBody] ManufacturerEntity manufacturer)
+        {
+            if (manufacturer == null)
+            {
+                return BadRequest("The manufacturer object is null");
+            }
+
+            try
+            {
+                // Insert the manufacturer into the database
+                manufacturer.Id = Guid.NewGuid();
+                Database.Instance.Add(manufacturer);
+                Database.Instance.SaveChanges();
+                return CreatedAtAction(nameof(GetById), new { id = manufacturer.Id }, manufacturer);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error inserting the manufacturer: {ex.Message}");
+            }
+        }
+
+
         /// <summary>
         /// Updates a manufacturer by its identifier.
         /// </summary>
         /// <param name="id">The identifier of the manufacturer to update.</param>
         /// <param name="manufacturer">The updated manufacturer.</param>
-        [HttpPut("Update a manufacturer by Id")]
+        [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] ManufacturerEntity manufacturer)
         {
             if (manufacturer == null)
@@ -84,7 +109,7 @@ namespace WebApplication1.Controllers
         /// Deletes a manufacturer by its identifier.
         /// </summary>
         /// <param name="id">The identifier of the manufacturer to delete.</param>
-        [HttpDelete("Delete a manufacturer by Id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             var existingManufacturer = _manufacturerRepository.GetById(id);
@@ -97,22 +122,6 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Adds a randomly generated manufacturer to the collection.
-        /// </summary>
-        /// <returns>The added manufacturer.</returns>
-        [HttpPost("Add a randomly generated manufacturer")]
-        public ActionResult<ManufacturerEntity> Add()
-        {
-            var faker = new Faker<ManufacturerEntity>()
-                .RuleFor(p => p.Id, f => f.Random.Guid())
-                .RuleFor(p => p.Name, f => f.Company.CompanyName())
-                .RuleFor(p => p.Description, f => f.Lorem.Sentence())
-                .RuleFor(p => p.Logo, f => f.Internet.Avatar())
-                .RuleFor(p => p.CountryOfOrigin, f => f.Address.Country());
-            var newManufacturer = faker.Generate();
-            _manufacturerRepository.Create(newManufacturer);
-            return CreatedAtAction(nameof(GetById), new { id = newManufacturer.Id }, newManufacturer);
-        }
+
     }
 }

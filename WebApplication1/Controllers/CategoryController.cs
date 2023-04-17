@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
         /// Retrieves all categories of commodities.
         /// </summary>
         /// <returns>An enumerable collection of all categories.</returns>
-        [HttpGet("Get all categories")]
+        [HttpGet]
         public IEnumerable<CategoryEntity> Get()
         {
             return _categoryRepository.GetAll();
@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="id">The identifier of the category to retrieve.</param>
         /// <returns>The category with the specified identifier.</returns>
-        [HttpGet("Get a category by Id")]
+        [HttpGet("{id}")]
         public ActionResult<CategoryEntity> GetById(Guid id)
         {
             var category = _categoryRepository.GetById(id);
@@ -51,12 +51,37 @@ namespace WebApplication1.Controllers
             return category;
         }
 
+
+        [HttpPost]
+        public IActionResult AddFromBody([FromBody] CategoryEntity category)
+        {
+            if (category == null)
+            {
+                return BadRequest("The category object is null");
+            }
+
+            try
+            {
+                // Insert the category into the database
+                category.Id = Guid.NewGuid();
+                Database.Instance.Add(category);
+                Database.Instance.SaveChanges();
+                return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error inserting the category: {ex.Message}");
+            }
+        }
+
+
         /// <summary>
         /// Updates a category of commodities by its identifier.
         /// </summary>
         /// <param name="id">The identifier of the category to update.</param>
         /// <param name="category">The updated category.</param>
-        [HttpPut("Update a category by Id")]
+        [HttpPut("{id}")]
         public IActionResult Update([FromBody] CategoryEntity category)
         {
             if (category == null)
@@ -81,7 +106,7 @@ namespace WebApplication1.Controllers
         /// Deletes a category of commodities by its identifier.
         /// </summary>
         /// <param name="id">The identifier of the category to delete.</param>
-        [HttpDelete("Delete a category by Id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             var existingCategory = _categoryRepository.GetById(id);
@@ -96,22 +121,6 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Adds a randomly generated category to the collection.
-        /// </summary>
-        /// <returns>The added category.</returns>
-        [HttpPost("Add a randomly generated category")]
-        public ActionResult<CategoryEntity> Add()
-        {
-            var faker = new Faker<CategoryEntity>()
-                .RuleFor(p => p.Id, f => f.Random.Guid())
-                .RuleFor(p => p.Name, f => f.Commerce.Categories(1)[0]);
 
-            var newCategory = faker.Generate();
-
-            _categoryRepository.Create(newCategory);
-
-            return CreatedAtAction(nameof(GetById), new { id = newCategory.Id }, newCategory);
-        }
     }
 }

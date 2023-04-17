@@ -31,7 +31,7 @@ namespace WebApplication1.Controllers
         /// Retrieves all commodities.
         /// </summary>
         /// <returns>An enumerable collection of all commodities.</returns>
-        [HttpGet("Get all commodities")]
+        [HttpGet]
         public IEnumerable<CommodityEntity> Get()
         {
             return _commodityRepository.GetAll();
@@ -42,7 +42,7 @@ namespace WebApplication1.Controllers
         /// </summary>
         /// <param name="id">The identifier of the commodity to retrieve.</param>
         /// <returns>The commodity with the specified identifier.</returns>
-        [HttpGet("Get a commodity by Id/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<CommodityEntity> GetById(Guid id)
         {
             var commodity = _commodityRepository.GetById(id);
@@ -55,12 +55,37 @@ namespace WebApplication1.Controllers
             return commodity;
         }
 
+
+
+        [HttpPost]
+        public IActionResult AddFromBody([FromBody] CommodityEntity commodity)
+        {
+            if (commodity == null)
+            {
+                return BadRequest("The commodity object is null");
+            }
+
+            try
+            {
+                // Insert the commodity into the database
+                commodity.Id = Guid.NewGuid();
+                Database.Instance.Add(commodity);
+                Database.Instance.SaveChanges();
+                return CreatedAtAction(nameof(GetById), new { id = commodity.Id }, commodity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error inserting the commodity: {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// Updates a commodity by its identifier.
         /// </summary>
         /// <param name="id">The identifier of the commodity to update.</param>
         /// <param name="commodity">The updated commodity.</param>
-        [HttpPut("Update a commodity by Id/{id}")]
+        [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] CommodityEntity commodity)
         {
             if (commodity == null || commodity.Id != id)
@@ -95,7 +120,7 @@ namespace WebApplication1.Controllers
         /// Deletes a commodity by its identifier.
         /// </summary>
         /// <param name="id">The identifier of the commodity to delete.</param>
-        [HttpDelete("Delete a commodity by Id/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             var existingCommodity = _commodityRepository.GetById(id);
@@ -109,62 +134,6 @@ namespace WebApplication1.Controllers
             Database.Instance.SaveChanges();
 
             return NoContent();
-        }
-
-        /// <summary>
-        /// Adds a randomly generated commodity to the collection.
-        /// </summary>
-        /// <returns>The added commodity.</returns>
-        [HttpPost("Add a randomly generated commodity")]
-        public ActionResult<CommodityEntity> Add()
-        {
-            var faker = new Faker<CommodityEntity>()
-                .RuleFor(p => p.Id, f => f.Random.Guid())
-                .RuleFor(p => p.Name, f => f.Commerce.ProductName())
-                .RuleFor(p => p.Picture, f => f.Lorem.Word() + ".jpg")
-                .RuleFor(p => p.Description, f => String.Join(" ", f.Lorem.Words()))
-                .RuleFor(p => p.Price, f => Convert.ToDecimal(f.Commerce.Price()))
-                .RuleFor(p => p.Weight, f => f.Random.Number(1, 100))
-                .RuleFor(p => p.Quantity, f => f.Random.Number(1, 100))
-                .RuleFor(p => p.Category,
-                    f => new CategoryEntity { Id = f.Random.Guid(), Name = f.Commerce.Categories(1)[0] })
-                .RuleFor(p => p.Manufacturer,
-                    f => new ManufacturerEntity { Id = f.Random.Guid(), Name = f.Company.CompanyName() })
-                .RuleFor(p => p.Ratings, f => Enumerable.Range(1, f.Random.Number(1, 5))
-                    .Select(_ => new RatingEntity
-                    {
-                        Id = f.Random.Guid(), Stars = f.Random.Number(1, 5), Title = f.Lorem.Word(),
-                        Description = f.Lorem.Paragraph(), CommodityEntityId = f.Random.Guid()
-                    }));
-
-            CommodityEntity myCommodity = faker.Generate();
-            _commodityRepository.Create(myCommodity);
-
-            return CreatedAtAction(nameof(GetById), new { id = myCommodity.Id }, myCommodity);
-        }
-
-
-        [HttpPost("Add a commodity")]
-        public IActionResult AddFromBody([FromBody] CommodityEntity commodity)
-        {
-            if (commodity == null)
-            {
-                return BadRequest("The commodity object is null");
-            }
-
-            try
-            {
-                // Insert the commodity into the database
-                commodity.Id = Guid.NewGuid();
-                Database.Instance.Add(commodity);
-                Database.Instance.SaveChanges();
-                return CreatedAtAction(nameof(GetById), new { id = commodity.Id }, commodity);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error inserting the commodity: {ex.Message}");
-            }
         }
     }
 }
