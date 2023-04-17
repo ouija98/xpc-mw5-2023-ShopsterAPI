@@ -51,10 +51,9 @@ namespace Shopster.ShopsterAPI.Controllers
             try
             {
                 // Insert the manufacturer into the database
-                manufacturer.Id = Guid.NewGuid();
-                _manufacturerRepository.Create(manufacturer);
-                _logger.LogInformation("Manufacturer with ID {id} created", manufacturer.Id);
-                return CreatedAtAction(nameof(GetById), new { id = manufacturer.Id }, manufacturer);
+                var addedManufacturerId = _manufacturerRepository.Create(manufacturer);
+                _logger.LogInformation("Manufacturer with ID {id} created", addedManufacturerId);
+                return Ok(addedManufacturerId);
             }
             catch (Exception ex)
             {
@@ -63,6 +62,7 @@ namespace Shopster.ShopsterAPI.Controllers
                     $"Error inserting the manufacturer: {ex.Message}");
             }
         }
+
 
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] ManufacturerEntity manufacturer)
@@ -87,7 +87,7 @@ namespace Shopster.ShopsterAPI.Controllers
 
             _manufacturerRepository.Update(existingManufacturer);
             _logger.LogInformation("Manufacturer with ID {id} updated", id);
-            return NoContent();
+            return Ok(existingManufacturer);
         }
 
         [HttpDelete("{id}")]
@@ -103,7 +103,7 @@ namespace Shopster.ShopsterAPI.Controllers
 
             _manufacturerRepository.Delete(id);
             _logger.LogInformation("Manufacturer with ID {id} deleted", id);
-            return NoContent();
+            return Ok(existingManufacturer);
         }
     }
 }

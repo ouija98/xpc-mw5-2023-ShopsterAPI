@@ -93,7 +93,7 @@ namespace Shopster.ShopsterAPI.Controllers
             _logger.LogInformation($"Updating commodity with id {id}");
             _commodityRepository.Update(existingCommodity);
 
-            return NoContent();
+            return Ok(existingCommodity);
         }
 
         [HttpDelete("{id}")]
@@ -107,10 +107,20 @@ namespace Shopster.ShopsterAPI.Controllers
                 return NotFound();
             }
 
-            _logger.LogInformation($"Deleting commodity with id {id}");
-            _commodityRepository.Delete(id);
+            try
+            {
+                _logger.LogInformation($"Deleting commodity with id {id}");
+                _commodityRepository.Delete(id);
 
-            return NoContent();
+                return Ok(existingCommodity);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting commodity with ID {id}");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error deleting the commodity: {ex.Message}");
+            }
         }
+
     }
 }

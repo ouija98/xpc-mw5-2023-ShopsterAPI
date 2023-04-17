@@ -48,7 +48,7 @@ namespace Shopster.ShopsterAPI.Controllers
                 }
 
                 _logger.LogInformation($"Retrieved category with id {id}.");
-                return Ok(category);
+                return Ok(category); 
             }
             catch (Exception ex)
             {
@@ -70,9 +70,9 @@ namespace Shopster.ShopsterAPI.Controllers
             try
             {
                 _categoryRepository.Create(category);
- 
+
                 _logger.LogInformation($"Category with id {category.Id} created.");
-                return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
+                return Ok(category); 
             }
             catch (Exception ex)
             {
@@ -81,9 +81,8 @@ namespace Shopster.ShopsterAPI.Controllers
                     $"Error inserting the category: {ex.Message}");
             }
         }
-
         [HttpPut]
-        public IActionResult Update([FromBody] CategoryEntity category)
+        public IActionResult Update(Guid id, [FromBody] CategoryEntity category)
         {
             if (category == null)
             {
@@ -91,11 +90,11 @@ namespace Shopster.ShopsterAPI.Controllers
                 return BadRequest();
             }
 
-            var existingCategory = _categoryRepository.GetById(category.Id);
+            var existingCategory = _categoryRepository.GetById(id);
 
             if (existingCategory == null)
             {
-                _logger.LogInformation($"Category with id {category.Id} not found.");
+                _logger.LogInformation($"Category with id {id} not found.");
                 return NotFound();
             }
 
@@ -104,8 +103,8 @@ namespace Shopster.ShopsterAPI.Controllers
             try
             {
                 _categoryRepository.Update(existingCategory);
-                _logger.LogInformation($"Category with id {category.Id} updated.");
-                return NoContent();
+                _logger.LogInformation($"Category with id {id} updated.");
+                return Ok(existingCategory); 
             }
             catch (Exception ex)
             {
@@ -132,7 +131,7 @@ namespace Shopster.ShopsterAPI.Controllers
 
                 _logger.LogInformation($"Category with ID {id} has been deleted successfully.");
 
-                return NoContent();
+                return Ok(existingCategory); 
             }
             catch (Exception ex)
             {

@@ -54,9 +54,8 @@ namespace Shopster.ShopsterAPI.Controllers
             try
             {
                 _logger.LogInformation($"Inserting new rating with title {rating.Title}");
-                rating.Id = Guid.NewGuid();
-                _ratingRepository.Create(rating);
-                return CreatedAtAction(nameof(GetById), new { id = rating.Id }, rating);
+                var addedRatingId= _ratingRepository.Create(rating);
+                return Ok(addedRatingId);
             }
             catch (Exception ex)
             {
@@ -89,7 +88,7 @@ namespace Shopster.ShopsterAPI.Controllers
             _logger.LogInformation($"Updating rating with id {id}");
             _ratingRepository.Update(existingRating);
 
-            return NoContent();
+            return Ok(existingRating);
         }
 
         [HttpDelete("{id}")]
@@ -106,7 +105,7 @@ namespace Shopster.ShopsterAPI.Controllers
             _logger.LogInformation($"Deleting rating with id {id}");
             _ratingRepository.Delete(id);
 
-            return NoContent();
+            return Ok(existingRating);
         }
     }
 }
