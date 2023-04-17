@@ -83,8 +83,7 @@ namespace WebApplication1.Controllers
             existingCommodity.Quantity = commodity.Quantity;
             existingCommodity.Category = commodity.Category;
             existingCommodity.Manufacturer = commodity.Manufacturer;
-            existingCommodity.Stars = commodity.Stars;
-            existingCommodity.Ratings = commodity.Ratings;
+            //existingCommodity.Ratings = commodity.Ratings;
 
             _commodityRepository.Update(existingCommodity);
             Database.Instance.SaveChanges();
@@ -131,7 +130,6 @@ namespace WebApplication1.Controllers
                     f => new CategoryEntity { Id = f.Random.Guid(), Name = f.Commerce.Categories(1)[0] })
                 .RuleFor(p => p.Manufacturer,
                     f => new ManufacturerEntity { Id = f.Random.Guid(), Name = f.Company.CompanyName() })
-                .RuleFor(p => p.Stars, f => f.Random.Number(1, 5))
                 .RuleFor(p => p.Ratings, f => Enumerable.Range(1, f.Random.Number(1, 5))
                     .Select(_ => new RatingEntity
                     {

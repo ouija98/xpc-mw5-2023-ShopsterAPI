@@ -38,7 +38,7 @@ namespace WebApplication1.Repositories
 
             var existingCategory = Database.Instance.Category.Single(c => c.Id == entity.Id);
             existingCategory.Name = entity.Name;
-            existingCategory.Commodities = entity.Commodities;
+            //existingCategory.Commodities = entity.Commodities;
             Database.Instance.SaveChanges();
 
             return existingCategory;

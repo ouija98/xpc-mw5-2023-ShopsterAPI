@@ -47,7 +47,7 @@ namespace WebApplication1.Repositories
             existingManufacturer.Description = entity.Description;
             existingManufacturer.Logo = entity.Logo;
             existingManufacturer.CountryOfOrigin = entity.CountryOfOrigin;
-            existingManufacturer.Commodities = entity.Commodities;
+            //existingManufacturer.Commodities = entity.Commodities;
 
             Database.Instance.SaveChanges();
 
