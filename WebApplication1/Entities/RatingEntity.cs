@@ -25,7 +25,7 @@ public class RatingEntity : EntityBase
     /// </summary>
     public Guid CommodityEntityId { get; set; }
 
-    public CommodityEntity Commodity { get; set; }
+    public CommodityEntity Commodity { get; set; } = null!; 
 
 
 }

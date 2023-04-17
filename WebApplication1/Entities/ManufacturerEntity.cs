@@ -28,5 +28,5 @@ public class ManufacturerEntity : EntityBase
     /// <summary>
     /// Gets or sets the commodities produced by the manufacturer.
     /// </summary>
-    public ICollection<CommodityEntity>? Commodities { get; set; }
+    public ICollection<CommodityEntity> Commodities { get; } = new List<CommodityEntity>();
 }

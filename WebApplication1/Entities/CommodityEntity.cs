@@ -32,15 +32,16 @@
         /// </summary>
         public int Quantity { get; set; }
 
-        /// <summary>
-        /// Gets or sets the category entity of the commodity.
-        /// </summary>
-        public CategoryEntity Category { get; set; }
 
         /// <summary>
         /// Gets or sets the category entity ID of the commodity.
         /// </summary>
         public Guid CategoryId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category entity of the commodity.
+        /// </summary>
+        public CategoryEntity Category { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the manufacturer entity ID of the commodity.
@@ -50,16 +51,12 @@
         /// <summary>
         /// Gets or sets the manufacturer entity of the commodity.
         /// </summary>
-        public ManufacturerEntity Manufacturer { get; set; }
+        public ManufacturerEntity Manufacturer { get; set; } = null!;
 
-        /// <summary>
-        /// Gets or sets the star rating of the commodity.
-        /// </summary>
-        public int Stars { set; get; }
 
         /// <summary>
         /// Gets or sets the list of rating entities for the commodity.
         /// </summary>
-        public ICollection<RatingEntity>? Ratings { get; set; }
+        public ICollection<RatingEntity> Ratings { get;  } = new List<RatingEntity>();
     }
 }
