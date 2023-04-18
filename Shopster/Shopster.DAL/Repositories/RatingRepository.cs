@@ -18,8 +18,7 @@ namespace Shopster.Shopster.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-
-            entity.Id = Guid.NewGuid();
+            
             _context.Rating.Add(entity);
             _context.SaveChanges();
 

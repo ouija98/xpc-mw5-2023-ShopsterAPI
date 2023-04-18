@@ -18,12 +18,9 @@ public class CommodityRepository : IRepository<CommodityEntity>
         {
             throw new ArgumentNullException(nameof(entity));
         }
-
-        entity.Id = Guid.NewGuid();
-
+        
         foreach (var rating in entity.Ratings)
         {
-            rating.Id = Guid.NewGuid();
             _context.Rating.Add(rating);
         }
 
