@@ -1,4 +1,5 @@
-﻿using Shopster.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopster.Entities;
 
 namespace Shopster.Shopster.DAL.Repositories
 {
@@ -34,12 +35,18 @@ public class CommodityRepository : IRepository<CommodityEntity>
 
     public IEnumerable<CommodityEntity> GetAll()
     {
-        return _context.Commodity.ToList();
+        return _context.Commodity
+            .Include(c => c.Category)
+            .Include(c => c.Manufacturer)
+            .ToList();
     }
 
     public CommodityEntity GetById(Guid id)
     {
-        return _context.Commodity.Single(s => s.Id == id);
+        return _context.Commodity
+            .Include(c => c.Category)
+            .Include(c => c.Manufacturer)
+            .Single(s => s.Id == id);
     }
 
     public CommodityEntity Update(CommodityEntity entity)

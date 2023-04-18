@@ -1,4 +1,5 @@
-﻿using Shopster.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopster.Entities;
 
 namespace Shopster.Shopster.DAL.Repositories
 {
@@ -27,7 +28,9 @@ namespace Shopster.Shopster.DAL.Repositories
 
         public RatingEntity GetById(Guid id)
         {
-            return _context.Rating.Single(r => r.Id == id);
+            return _context.Rating
+                .Include(r => r.Commodity)
+                .Single(r => r.Id == id);
         }
 
         public RatingEntity Update(RatingEntity entity)
@@ -58,7 +61,9 @@ namespace Shopster.Shopster.DAL.Repositories
 
         public IEnumerable<RatingEntity> GetAll()
         {
-            return _context.Rating.ToList();
+            return _context.Rating
+                .Include(r => r.Commodity)
+                .ToList();
         }
     }
 }

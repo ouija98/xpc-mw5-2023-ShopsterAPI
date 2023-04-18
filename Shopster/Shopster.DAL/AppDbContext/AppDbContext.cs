@@ -24,15 +24,27 @@ namespace Shopster.Shopster.DAL.AppDbContext
 
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<CategoryEntity>()
                 .Property(c => c.Id)
                 .HasDefaultValueSql("NEWID()");
-           
+
+            modelBuilder.Entity<ManufacturerEntity>()
+                .Property(m => m.Id)
+                .HasDefaultValueSql("NEWID()");
+
+            modelBuilder.Entity<RatingEntity>()
+                .Property(r => r.Id)
+                .HasDefaultValueSql("NEWID()");
+
+            modelBuilder.Entity<CommodityEntity>()
+                .Property(c => c.Id)
+                .HasDefaultValueSql("NEWID()");
+
             modelBuilder.Entity<CategoryEntity>()
                 .HasMany(c => c.Commodities)
                 .WithOne(c => c.Category)
@@ -52,11 +64,7 @@ namespace Shopster.Shopster.DAL.AppDbContext
                 .Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
 
-
             DbSeeds.SeedDatabase(modelBuilder);
-
-
-
         }
     }
 }
