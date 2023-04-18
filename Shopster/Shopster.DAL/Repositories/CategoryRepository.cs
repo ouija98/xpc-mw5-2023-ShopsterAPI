@@ -61,7 +61,8 @@ namespace Shopster.Shopster.DAL.Repositories
         public IEnumerable<CategoryEntity> GetAll()
         {
             return _context.Category
-                .Include(c => c.Commodities);
+                .Include(c => c.Commodities)
+                .ToList();
         }
     }
 }
