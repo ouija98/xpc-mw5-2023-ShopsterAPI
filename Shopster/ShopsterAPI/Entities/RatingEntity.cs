@@ -6,5 +6,5 @@ public class RatingEntity : EntityBase
     public string Title { get; set; }
     public string Description { get; set; }
     public Guid CommodityEntityId { get; set; }
-    public CommodityEntity Commodity { get; set; } = null!;
+    public CommodityEntity? Commodity { get; set; } = null!;
 }

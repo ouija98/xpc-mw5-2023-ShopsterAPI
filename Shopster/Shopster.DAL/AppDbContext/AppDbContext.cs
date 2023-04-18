@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Shopster.Entities;
+using System.Reflection.Metadata;
 
 namespace Shopster.Shopster.DAL.AppDbContext
 {
@@ -26,6 +27,8 @@ namespace Shopster.Shopster.DAL.AppDbContext
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             modelBuilder.Entity<CategoryEntity>()
                 .Property(c => c.Id)
                 .HasDefaultValueSql("NEWID()");
@@ -47,7 +50,13 @@ namespace Shopster.Shopster.DAL.AppDbContext
 
             modelBuilder.Entity<CommodityEntity>()
                 .Property(p => p.Price)
-                .HasColumnType("decimal(18,2)"); 
+                .HasColumnType("decimal(18,2)");
+
+
+            DbSeeds.SeedDatabase(modelBuilder);
+
+
+
         }
     }
 }

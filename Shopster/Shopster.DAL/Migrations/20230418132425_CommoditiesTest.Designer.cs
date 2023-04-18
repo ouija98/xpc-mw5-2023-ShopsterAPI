@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopster.Shopster.DAL.AppDbContext;
 
@@ -11,9 +12,11 @@ using Shopster.Shopster.DAL.AppDbContext;
 namespace Shopster.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230418132425_CommoditiesTest")]
+    partial class CommoditiesTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,22 +43,22 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1013de7d-c130-4440-ac15-e0e224f9aefc"),
+                            Id = new Guid("7397a2ce-af81-4d4b-84c1-2e37984e5df2"),
                             Name = "ctg1"
                         },
                         new
                         {
-                            Id = new Guid("5cf1cc47-04ac-48f8-b43c-5bc96a40ac8e"),
+                            Id = new Guid("9bba9fc0-674a-449a-8d98-349555819fa0"),
                             Name = "ctg3"
                         },
                         new
                         {
-                            Id = new Guid("7b961675-8b26-4866-af16-7a3eaffd7949"),
+                            Id = new Guid("b1d2ee9b-cdfa-4d9a-9d29-49d52123b02e"),
                             Name = "ctg5"
                         },
                         new
                         {
-                            Id = new Guid("09efdfd4-4e51-4c66-bf72-b80cc71de970"),
+                            Id = new Guid("c7daa61e-4cb9-4e1f-a02f-1ad327200a47"),
                             Name = "ctg6"
                         });
                 });
@@ -104,10 +107,10 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0c9cb969-ad41-4be3-a7ca-a65ac3371508"),
-                            CategoryId = new Guid("1013de7d-c130-4440-ac15-e0e224f9aefc"),
+                            Id = new Guid("4e170f02-35e2-445a-96ce-fd4e65b35d4b"),
+                            CategoryId = new Guid("7397a2ce-af81-4d4b-84c1-2e37984e5df2"),
                             Description = "desc1",
-                            ManufacturerId = new Guid("334a87ef-d557-49cc-9c65-d6db05dd7425"),
+                            ManufacturerId = new Guid("11d26544-a730-427a-8b30-ba7d154d31ae"),
                             Name = "cmd1",
                             Picture = "picture.jpg",
                             Price = 10m,
@@ -116,10 +119,10 @@ namespace Shopster.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6d46d6d6-7620-4912-9a19-57bf1a672aa9"),
-                            CategoryId = new Guid("5cf1cc47-04ac-48f8-b43c-5bc96a40ac8e"),
+                            Id = new Guid("f31e115b-3e23-47a3-824d-68c0c5490af8"),
+                            CategoryId = new Guid("9bba9fc0-674a-449a-8d98-349555819fa0"),
                             Description = "desc2",
-                            ManufacturerId = new Guid("ae9d1446-b6b5-4ad5-a983-e37eac15370f"),
+                            ManufacturerId = new Guid("81363ec8-2b79-46f8-95ca-e47790135731"),
                             Name = "cmd2",
                             Picture = "picture.jpg",
                             Price = 1m,
@@ -128,10 +131,10 @@ namespace Shopster.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b65682de-f311-44d4-bd55-e2ea99cc5fbc"),
-                            CategoryId = new Guid("09efdfd4-4e51-4c66-bf72-b80cc71de970"),
+                            Id = new Guid("26e1b935-9c8d-4d74-9957-96d96020b74f"),
+                            CategoryId = new Guid("c7daa61e-4cb9-4e1f-a02f-1ad327200a47"),
                             Description = "desc3",
-                            ManufacturerId = new Guid("334a87ef-d557-49cc-9c65-d6db05dd7425"),
+                            ManufacturerId = new Guid("11d26544-a730-427a-8b30-ba7d154d31ae"),
                             Name = "cmd3",
                             Picture = "picture.jpg",
                             Price = 23254m,
@@ -140,10 +143,10 @@ namespace Shopster.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fff73b1a-34f5-4539-a004-d2cdd5a55994"),
-                            CategoryId = new Guid("09efdfd4-4e51-4c66-bf72-b80cc71de970"),
+                            Id = new Guid("84b2d548-8371-4cdb-9d69-abd0e8dbd3d7"),
+                            CategoryId = new Guid("c7daa61e-4cb9-4e1f-a02f-1ad327200a47"),
                             Description = "desc4",
-                            ManufacturerId = new Guid("94cd9937-55d7-4dac-8ec5-235efbd905dd"),
+                            ManufacturerId = new Guid("fc12bd43-cb22-42ce-a0e8-f5d98267be06"),
                             Name = "cmd4",
                             Picture = "picture.jpg",
                             Price = 55m,
@@ -181,7 +184,7 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("759a91d0-afc6-422d-a388-c8b517935667"),
+                            Id = new Guid("ec2e0405-2227-4510-89e3-8dcb6c7e76b6"),
                             CountryOfOrigin = "CZ",
                             Description = "desc1",
                             Logo = "logo1.png",
@@ -189,7 +192,7 @@ namespace Shopster.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ae9d1446-b6b5-4ad5-a983-e37eac15370f"),
+                            Id = new Guid("81363ec8-2b79-46f8-95ca-e47790135731"),
                             CountryOfOrigin = "CZ",
                             Description = "desc2",
                             Logo = "logo2.png",
@@ -197,7 +200,7 @@ namespace Shopster.Migrations
                         },
                         new
                         {
-                            Id = new Guid("334a87ef-d557-49cc-9c65-d6db05dd7425"),
+                            Id = new Guid("11d26544-a730-427a-8b30-ba7d154d31ae"),
                             CountryOfOrigin = "CZ",
                             Description = "desc3",
                             Logo = "logo3.png",
@@ -205,7 +208,7 @@ namespace Shopster.Migrations
                         },
                         new
                         {
-                            Id = new Guid("94cd9937-55d7-4dac-8ec5-235efbd905dd"),
+                            Id = new Guid("fc12bd43-cb22-42ce-a0e8-f5d98267be06"),
                             CountryOfOrigin = "CZ",
                             Description = "desc4",
                             Logo = "logo4.png",
@@ -242,35 +245,11 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9056e54a-180c-4c13-a637-8245d5f368fd"),
-                            CommodityEntityId = new Guid("6d46d6d6-7620-4912-9a19-57bf1a672aa9"),
+                            Id = new Guid("93bea869-8421-48c2-bcea-474b0a91a7af"),
+                            CommodityEntityId = new Guid("4e170f02-35e2-445a-96ce-fd4e65b35d4b"),
                             Description = "desc1",
                             Stars = 1,
                             Title = "title1"
-                        },
-                        new
-                        {
-                            Id = new Guid("a4b57112-adeb-4645-9d19-d65b5218fbc2"),
-                            CommodityEntityId = new Guid("6d46d6d6-7620-4912-9a19-57bf1a672aa9"),
-                            Description = "desc2",
-                            Stars = 5,
-                            Title = "title2"
-                        },
-                        new
-                        {
-                            Id = new Guid("2ad975f5-a92c-4ba6-b26c-23e141de1774"),
-                            CommodityEntityId = new Guid("fff73b1a-34f5-4539-a004-d2cdd5a55994"),
-                            Description = "desc3",
-                            Stars = 5,
-                            Title = "title3"
-                        },
-                        new
-                        {
-                            Id = new Guid("53da0d9c-569e-4ad1-a2b7-7570886ea1ca"),
-                            CommodityEntityId = new Guid("0c9cb969-ad41-4be3-a7ca-a65ac3371508"),
-                            Description = "desc4",
-                            Stars = 4,
-                            Title = "title4"
                         });
                 });
 
