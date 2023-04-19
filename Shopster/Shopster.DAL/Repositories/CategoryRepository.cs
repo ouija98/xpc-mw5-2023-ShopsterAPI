@@ -3,9 +3,6 @@ using Shopster.Entities;
 
 namespace Shopster.Shopster.DAL.Repositories
 {
-    /// <summary>
-    /// Repository for managing categories.
-    /// </summary>
     public class CategoryRepository : IRepository<CategoryEntity>
     {
         private readonly AppDbContext.AppDbContext _context;

@@ -24,7 +24,14 @@ namespace Shopster.Shopster.DAL.Repositories
 
             return entity.Id;
         }
-
+        
+        public IEnumerable<ManufacturerEntity> GetAll()
+        {
+            return _context.Manufacturer
+                .Include(m => m.Commodities)
+                .ToList();
+        }
+        
         public ManufacturerEntity GetById(Guid id)
         {
             var manufacturer = _context.Manufacturer
@@ -68,13 +75,6 @@ namespace Shopster.Shopster.DAL.Repositories
                 .Single(m => m.Id == id);
             _context.Manufacturer.Remove(manufacturer);
             _context.SaveChanges();
-        }
-
-        public IEnumerable<ManufacturerEntity> GetAll()
-        {
-            return _context.Manufacturer
-                .Include(m => m.Commodities)
-                .ToList();
         }
     }
 }
