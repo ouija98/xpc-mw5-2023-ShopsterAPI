@@ -9,7 +9,7 @@ ShopsterAPI is a RESTful API built using ASP.NET Core that provides functionalit
 To run the project locally, you will need to have .NET Core installed on your machine. You can download .NET Core from [here](https://dotnet.microsoft.com/download).
 
 1. Clone the repository to your local machine.
-2. Open a terminal or command prompt in the project directory and run the following command to install the required dependencies: `dotnet restore`
+2. Open a terminal or command prompt in the project directory and run the following command to install the required dependencies: `dotnet build`
 3. Run the following command to create and migrate the database: `dotnet ef database update`
 4. Finally, run the following command to start the application: `dotnet run`
 ## Endpoints
