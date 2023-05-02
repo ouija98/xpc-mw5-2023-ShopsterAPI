@@ -11,10 +11,6 @@ namespace Shopster.DAL
         {
         }
 
-        public AppDbContext()
-        {
-        }
-
         public DbSet<CommodityEntity> Commodity { get; set; }
         public DbSet<CategoryEntity> Category { get; set; }
         public DbSet<ManufacturerEntity> Manufacturer { get; set; }
