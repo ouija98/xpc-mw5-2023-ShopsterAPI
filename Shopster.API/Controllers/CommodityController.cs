@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DTOs;
 
 namespace Shopster.Controllers
 {
@@ -10,22 +13,26 @@ namespace Shopster.Controllers
     {
         private readonly ILogger<CommodityController> _logger;
         private readonly IRepository<CommodityEntity> _commodityRepository;
+        private readonly IMapper _mapper;
 
-        public CommodityController(ILogger<CommodityController> logger, IRepository<CommodityEntity> commodityRepository)
+        public CommodityController(ILogger<CommodityController> logger,
+            IRepository<CommodityEntity> commodityRepository, IMapper mapper)
         {
             _logger = logger;
             _commodityRepository = commodityRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IEnumerable<CommodityEntity> Get()
+        public IActionResult GetAll()
         {
             _logger.LogInformation("Getting all commodities");
-            return _commodityRepository.GetAll();
+            var commodities = _commodityRepository.GetAll().ProjectTo<CommodityDTO>(_mapper.ConfigurationProvider);
+            return Ok(commodities);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CommodityEntity> GetById(Guid id)
+        public IActionResult GetById(Guid id)
         {
             _logger.LogInformation($"Getting commodity with id {id}");
             var commodity = _commodityRepository.GetById(id);
@@ -36,13 +43,14 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            return commodity;
+            var commodityDto = _mapper.Map<CommodityDTO>(commodity);
+            return Ok(commodityDto);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] CommodityEntity commodity)
+        public IActionResult Add([FromBody] CommodityDTO commodityDto)
         {
-            if (commodity == null)
+            if (commodityDto == null)
             {
                 _logger.LogError("Commodity object is null");
                 return BadRequest("The commodity object is null");
@@ -50,11 +58,10 @@ namespace Shopster.Controllers
 
             try
             {
+                var commodity = _mapper.Map<CommodityEntity>(commodityDto);
                 _logger.LogInformation($"Inserting new commodity with name {commodity.Name}");
-                // Insert the commodity into the database
-                commodity.Id = Guid.NewGuid();
-                _commodityRepository.Create(commodity);
-                return CreatedAtAction(nameof(GetById), new { id = commodity.Id }, commodity);
+                var addedCommodityId = _commodityRepository.Create(commodity);
+                return Ok(addedCommodityId);
             }
             catch (Exception ex)
             {
@@ -65,9 +72,9 @@ namespace Shopster.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] CommodityEntity commodity)
+        public IActionResult Update(Guid id, [FromBody] CommodityDTO commodityDTO)
         {
-            if (commodity == null || commodity.Id != id)
+            if (commodityDTO == null || commodityDTO.Id != id)
             {
                 _logger.LogError($"Invalid commodity object or commodity ID: {id}");
                 return BadRequest();
@@ -81,19 +88,12 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            existingCommodity.Name = commodity.Name;
-            existingCommodity.Picture = commodity.Picture;
-            existingCommodity.Description = commodity.Description;
-            existingCommodity.Price = commodity.Price;
-            existingCommodity.Weight = commodity.Weight;
-            existingCommodity.Quantity = commodity.Quantity;
-            existingCommodity.Category = commodity.Category;
-            existingCommodity.Manufacturer = commodity.Manufacturer;
+            _mapper.Map(commodityDTO, existingCommodity);
 
             _logger.LogInformation($"Updating commodity with id {id}");
             _commodityRepository.Update(existingCommodity);
 
-            return Ok(existingCommodity);
+            return Ok(_mapper.Map<CommodityDTO>(existingCommodity));
         }
 
         [HttpDelete("{id}")]
@@ -112,7 +112,7 @@ namespace Shopster.Controllers
                 _logger.LogInformation($"Deleting commodity with id {id}");
                 _commodityRepository.Delete(id);
 
-                return Ok(existingCommodity);
+                return Ok(_mapper.Map<CommodityDTO>(existingCommodity));
             }
             catch (Exception ex)
             {
@@ -121,6 +121,5 @@ namespace Shopster.Controllers
                     $"Error deleting the commodity: {ex.Message}");
             }
         }
-
     }
 }

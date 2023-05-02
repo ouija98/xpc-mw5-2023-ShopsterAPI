@@ -3,102 +3,107 @@ using Shopster.DAL.Entities;
 
 namespace Shopster.DAL.Repositories
 {
-public class CommodityRepository : IRepository<CommodityEntity>
-{
-    private readonly AppDbContext _context;
-
-    public CommodityRepository(AppDbContext context)
+    public class CommodityRepository : IRepository<CommodityEntity>
     {
-        _context = context;
-    }
+        private readonly AppDbContext _context;
 
-    public Guid Create(CommodityEntity entity)
-    {
-        if (entity is null)
+        public CommodityRepository(AppDbContext context)
         {
-            throw new ArgumentNullException(nameof(entity));
+            _context = context;
+        }
+
+        public IQueryable<CommodityEntity> GetAll()
+        {
+            return _context.Commodity
+                .Include(c => c.Category)
+                .Include(c => c.Manufacturer);
         }
         
-        foreach (var rating in entity.Ratings)
+        public Guid Create(CommodityEntity entity)
         {
-            _context.Rating.Add(rating);
-        }
-
-        _context.Commodity.Add(entity);
-        _context.SaveChanges();
-
-        return entity.Id;
-    }
-
-    public IEnumerable<CommodityEntity> GetAll()
-    {
-        return _context.Commodity
-            .Include(c => c.Category)
-            .Include(c => c.Manufacturer)
-            .ToList();
-    }
-
-    public CommodityEntity GetById(Guid id)
-    {
-        return _context.Commodity
-            .Include(c => c.Category)
-            .Include(c => c.Manufacturer)
-            .Single(s => s.Id == id);
-    }
-
-    public CommodityEntity Update(CommodityEntity entity)
-    {
-        if (entity is null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
-
-        var existingCommodity = _context.Commodity.Single(s => s.Id == entity.Id);
-
-        existingCommodity.Name = entity.Name;
-        existingCommodity.Description = entity.Description;
-        existingCommodity.Price = entity.Price;
-        existingCommodity.Weight = entity.Weight;
-        existingCommodity.Quantity = entity.Quantity;
-        existingCommodity.Category = entity.Category;
-        existingCommodity.Manufacturer = entity.Manufacturer;
-
-        // remove old ratings that are not present in the updated commodity
-        foreach (var oldRating in existingCommodity.Ratings.ToList())
-        {
-            if (!entity.Ratings.Contains(oldRating))
+            if (entity is null)
             {
-                existingCommodity.Ratings.Remove(oldRating);
-                _context.Rating.Remove(oldRating);
+                throw new ArgumentNullException(nameof(entity));
             }
-        }
 
-        // add new ratings that are not present in the existing commodity
-        foreach (var newRating in entity.Ratings)
-        {
-            if (!existingCommodity.Ratings.Contains(newRating))
+            foreach (var rating in entity.Ratings)
             {
-                newRating.Id = Guid.NewGuid();
-                existingCommodity.Ratings.Add(newRating);
-                _context.Rating.Add(newRating);
+                _context.Rating.Add(rating);
             }
-        }
 
-        _context.SaveChanges();
+            _context.Commodity.Add(entity);
+            _context.SaveChanges();
+
+            return entity.Id;
+        }
         
-        return existingCommodity;
-    }
-
-    public void Delete(Guid id)
-    {
-        var commodity = _context.Commodity.Single(s => s.Id == id);
-        foreach (var rating in commodity.Ratings)
+        public CommodityEntity? GetById(Guid id)
         {
-            _context.Rating.Remove(rating);
+            return _context.Commodity
+                .Include(c => c.Category)
+                .Include(c => c.Manufacturer)
+                .SingleOrDefault(s => s.Id == id);
+            
         }
 
-        _context.Commodity.Remove(commodity);
-        _context.SaveChanges();
+        public CommodityEntity Update(CommodityEntity entity)
+        {
+            if (entity is null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            var existingCommodity = _context.Commodity.SingleOrDefault(s => s.Id == entity.Id);
+            if (existingCommodity == null)
+            {
+                throw new ArgumentException($"Commodity with id {entity.Id} does not exist.");
+
+            }
+
+            existingCommodity.Name = entity.Name;
+            existingCommodity.Description = entity.Description;
+            existingCommodity.Price = entity.Price;
+            existingCommodity.Weight = entity.Weight;
+            existingCommodity.Quantity = entity.Quantity;
+            existingCommodity.Category = entity.Category;
+            existingCommodity.Manufacturer = entity.Manufacturer;
+
+            // remove old ratings that are not present in the updated commodity
+            foreach (var oldRating in existingCommodity.Ratings.ToList())
+            {
+                if (!entity.Ratings.Contains(oldRating))
+                {
+                    existingCommodity.Ratings.Remove(oldRating);
+                    _context.Rating.Remove(oldRating);
+                }
+            }
+
+            // add new ratings that are not present in the existing commodity
+            foreach (var newRating in entity.Ratings)
+            {
+                if (!existingCommodity.Ratings.Contains(newRating))
+                {
+                    newRating.Id = Guid.NewGuid();
+                    existingCommodity.Ratings.Add(newRating);
+                    _context.Rating.Add(newRating);
+                }
+            }
+
+            _context.SaveChanges();
+
+            return existingCommodity;
+        }
+
+        public void Delete(Guid id)
+        {
+            var commodity = _context.Commodity.Single(s => s.Id == id);
+            foreach (var rating in commodity.Ratings)
+            {
+                _context.Rating.Remove(rating);
+            }
+
+            _context.Commodity.Remove(commodity);
+            _context.SaveChanges();
+        }
     }
-}
 }

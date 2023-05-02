@@ -25,11 +25,11 @@ namespace Shopster.DAL.Repositories
             return entity.Id;
         }
 
-        public RatingEntity GetById(Guid id)
+        public RatingEntity? GetById(Guid id)
         {
             return _context.Rating
                 .Include(r => r.Commodity)
-                .Single(r => r.Id == id);
+                .SingleOrDefault(r => r.Id == id);
         }
 
         public RatingEntity Update(RatingEntity entity)
@@ -39,7 +39,11 @@ namespace Shopster.DAL.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            var existingRating = _context.Rating.Single(r => r.Id == entity.Id);
+            var existingRating = _context.Rating.SingleOrDefault(r => r.Id == entity.Id);
+            if (existingRating == null)
+            {
+                throw new ArgumentException($"Commodity with id {entity.Id} does not exist.");
+            }
             existingRating.Stars = entity.Stars;
             existingRating.Title = entity.Title;
             existingRating.Description = entity.Description;
@@ -58,11 +62,10 @@ namespace Shopster.DAL.Repositories
             }
         }
 
-        public IEnumerable<RatingEntity> GetAll()
+        public IQueryable<RatingEntity> GetAll()
         {
             return _context.Rating
-                .Include(r => r.Commodity)
-                .ToList();
+                .Include(r => r.Commodity);
         }
     }
 }

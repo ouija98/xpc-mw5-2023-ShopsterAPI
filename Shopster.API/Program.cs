@@ -11,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 
 // Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(options => {options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;}); //added to handle cycles with entities referencing each other in circles in json response
+builder.Services.AddControllers();
+
+//Mapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -24,7 +28,8 @@ builder.Services.AddTransient<IRepository<CommodityEntity>, CommodityRepository>
 
 // Add DbContext dependency
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Shopster.API")));
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

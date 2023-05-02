@@ -11,20 +11,15 @@ namespace Shopster.DAL
         {
         }
 
+        public AppDbContext()
+        {
+        }
+
         public DbSet<CommodityEntity> Commodity { get; set; }
         public DbSet<CategoryEntity> Category { get; set; }
         public DbSet<ManufacturerEntity> Manufacturer { get; set; }
         public DbSet<RatingEntity> Rating { get; set; }
-
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //     IConfigurationRoot configuration = new ConfigurationBuilder()
-        //         .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-        //         .AddJsonFile("appsettings.json")
-        //         .Build();
-        //
-        //     optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-        // }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

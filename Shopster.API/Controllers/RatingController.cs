@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DTOs;
 
 namespace Shopster.Controllers
 {
@@ -10,18 +13,21 @@ namespace Shopster.Controllers
     {
         private readonly IRepository<RatingEntity> _ratingRepository;
         private readonly ILogger<RatingController> _logger;
+        private readonly IMapper _mapper;
 
-        public RatingController(IRepository<RatingEntity> ratingRepository, ILogger<RatingController> logger)
+        public RatingController(IRepository<RatingEntity> ratingRepository, ILogger<RatingController> logger,
+            IMapper mapper)
         {
             _ratingRepository = ratingRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
             _logger.LogInformation("Getting all ratings");
-            var ratings = _ratingRepository.GetAll();
+            var ratings = _ratingRepository.GetAll().ProjectTo<RatingDTO>(_mapper.ConfigurationProvider);
             return Ok(ratings);
         }
 
@@ -30,20 +36,21 @@ namespace Shopster.Controllers
         {
             _logger.LogInformation($"Getting rating with id {id}");
             var rating = _ratingRepository.GetById(id);
-
+            
             if (rating == null)
             {
                 _logger.LogWarning($"Rating with id {id} not found");
                 return NotFound();
             }
 
-            return Ok(rating);
+            var ratingDto = _mapper.Map<RatingDTO>(rating);
+            return Ok(ratingDto);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] RatingEntity rating)
+        public IActionResult Add([FromBody] RatingDTO ratingDTO)
         {
-            if (rating == null)
+            if (ratingDTO == null)
             {
                 _logger.LogWarning("Rating object is null");
                 return BadRequest("The rating object is null");
@@ -51,8 +58,9 @@ namespace Shopster.Controllers
 
             try
             {
+                var rating = _mapper.Map<RatingEntity>(ratingDTO);
                 _logger.LogInformation($"Inserting new rating with title {rating.Title}");
-                var addedRatingId= _ratingRepository.Create(rating);
+                var addedRatingId = _ratingRepository.Create(rating);
                 return Ok(addedRatingId);
             }
             catch (Exception ex)
@@ -63,37 +71,31 @@ namespace Shopster.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] RatingEntity rating)
+        public IActionResult Update(Guid id, [FromBody] RatingDTO ratingDTO)
         {
-            if (rating == null)
+            if (ratingDTO == null)
             {
                 _logger.LogWarning("Rating object is null");
                 return BadRequest();
             }
 
             var existingRating = _ratingRepository.GetById(id);
-
             if (existingRating == null)
             {
                 _logger.LogWarning($"Rating with id {id} not found");
                 return NotFound();
             }
 
-            existingRating.Stars = rating.Stars;
-            existingRating.Title = rating.Title;
-            existingRating.Description = rating.Description;
-
+            _mapper.Map(ratingDTO, existingRating);
             _logger.LogInformation($"Updating rating with id {id}");
             _ratingRepository.Update(existingRating);
-
-            return Ok(existingRating);
+            return Ok(_mapper.Map<RatingDTO>(existingRating));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
             var existingRating = _ratingRepository.GetById(id);
-
             if (existingRating == null)
             {
                 _logger.LogWarning($"Rating with id {id} not found");
@@ -102,8 +104,7 @@ namespace Shopster.Controllers
 
             _logger.LogInformation($"Deleting rating with id {id}");
             _ratingRepository.Delete(id);
-
-            return Ok(existingRating);
+            return Ok(_mapper.Map<RatingDTO>(existingRating));
         }
     }
 }

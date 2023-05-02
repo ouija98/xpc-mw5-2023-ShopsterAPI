@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DTOs;
 
 namespace Shopster.Controllers
 {
@@ -10,23 +13,26 @@ namespace Shopster.Controllers
     {
         private readonly ILogger<ManufacturerController> _logger;
         private readonly IRepository<ManufacturerEntity> _manufacturerRepository;
+        private readonly IMapper _mapper;
 
         public ManufacturerController(ILogger<ManufacturerController> logger,
-            IRepository<ManufacturerEntity> manufacturerRepository)
+            IRepository<ManufacturerEntity> manufacturerRepository, IMapper mapper)
         {
             _logger = logger;
             _manufacturerRepository = manufacturerRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IEnumerable<ManufacturerEntity> Get()
+        public IActionResult GetAll()
         {
             _logger.LogInformation("Retrieving all manufacturers");
-            return _manufacturerRepository.GetAll();
+            var manufacturers=  _manufacturerRepository.GetAll().ProjectTo<ManufacturerDTO>(_mapper.ConfigurationProvider);
+            return Ok(manufacturers);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ManufacturerEntity> GetById(Guid id)
+        public IActionResult GetById(Guid id)
         {
             _logger.LogInformation("Retrieving manufacturer by ID {id}", id);
             var manufacturer = _manufacturerRepository.GetById(id);
@@ -37,19 +43,22 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            return manufacturer;
+            var manufacturerDto = _mapper.Map<ManufacturerDTO>(manufacturer);
+            return Ok(manufacturerDto);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] ManufacturerEntity manufacturer)
+        public IActionResult Add([FromBody] ManufacturerDTO manufacturerDto)
         {
-            if (manufacturer == null)
+            if (manufacturerDto == null)
             {
                 return BadRequest("The manufacturer object is null");
             }
 
             try
             {
+                var manufacturer = _mapper.Map<ManufacturerEntity>(manufacturerDto);
+
                 // Insert the manufacturer into the database
                 var addedManufacturerId = _manufacturerRepository.Create(manufacturer);
                 _logger.LogInformation("Manufacturer with ID {id} created", addedManufacturerId);
@@ -65,9 +74,9 @@ namespace Shopster.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] ManufacturerEntity manufacturer)
+        public IActionResult Update(Guid id, [FromBody] ManufacturerDTO manufacturerDTO)
         {
-            if (manufacturer == null)
+            if (manufacturerDTO == null || manufacturerDTO.Id != id)
             {
                 return BadRequest();
             }
@@ -80,14 +89,11 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            existingManufacturer.Name = manufacturer.Name;
-            existingManufacturer.Description = manufacturer.Description;
-            existingManufacturer.Logo = manufacturer.Logo;
-            existingManufacturer.CountryOfOrigin = manufacturer.CountryOfOrigin;
+            _mapper.Map(manufacturerDTO, existingManufacturer);
 
             _manufacturerRepository.Update(existingManufacturer);
             _logger.LogInformation("Manufacturer with ID {id} updated", id);
-            return Ok(existingManufacturer);
+            return Ok(_mapper.Map<ManufacturerDTO>(existingManufacturer));
         }
 
         [HttpDelete("{id}")]
@@ -103,7 +109,8 @@ namespace Shopster.Controllers
 
             _manufacturerRepository.Delete(id);
             _logger.LogInformation("Manufacturer with ID {id} deleted", id);
-            return Ok(existingManufacturer);
+            return Ok(_mapper.Map<ManufacturerDTO>(existingManufacturer));
         }
+        
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Bogus;
+using Microsoft.EntityFrameworkCore;
 using Shopster.DAL.Entities;
 
 namespace Shopster.DAL
@@ -7,102 +10,67 @@ namespace Shopster.DAL
     {
         public static void SeedDatabase(ModelBuilder modelBuilder)
         {
-            var categoryData = new List<CategoryEntity>()
+            var categoryData = new List<CategoryEntity>();
+            var categoryFaker = new Faker<CategoryEntity>()
+                .RuleFor(c => c.Id, f => f.Random.Guid())
+                .RuleFor(c => c.Name, f => f.Commerce.Department());
+
+            for (int i = 0; i < 4; i++)
             {
-                new CategoryEntity() { Id = Guid.NewGuid(), Name = "ctg1" },
-                new CategoryEntity() { Id = Guid.NewGuid(), Name = "ctg3" },
-                new CategoryEntity() { Id = Guid.NewGuid(), Name = "ctg5" },
-                new CategoryEntity() { Id = Guid.NewGuid(), Name = "ctg6" },
-            };
+                categoryData.Add(categoryFaker.Generate());
+            }
 
             modelBuilder.Entity<CategoryEntity>().HasData(categoryData);
 
 
-            var manufacturerData = new List<ManufacturerEntity>()
+            var manufacturerData = new List<ManufacturerEntity>();
+            var manufacturerFaker = new Faker<ManufacturerEntity>()
+                .RuleFor(m => m.Id, f => f.Random.Guid())
+                .RuleFor(m => m.Name, f => f.Company.CompanyName())
+                .RuleFor(m => m.Description, f => f.Lorem.Paragraph())
+                .RuleFor(m => m.Logo, f => f.Internet.Avatar())
+                .RuleFor(m => m.CountryOfOrigin, f => f.Address.Country());
+
+            for (int i = 0; i < 4; i++)
             {
-                new ManufacturerEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "manu1",
-                    Description = "desc1", Logo = "logo1.png", CountryOfOrigin = "CZ"
-                },
-                new ManufacturerEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "manu2",
-                    Description = "desc2", Logo = "logo2.png", CountryOfOrigin = "CZ"
-                },
-                new ManufacturerEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "manu3",
-                    Description = "desc3", Logo = "logo3.png", CountryOfOrigin = "CZ"
-                },
-                new ManufacturerEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "manu4",
-                    Description = "desc4", Logo = "logo4.png", CountryOfOrigin = "CZ"
-                },
-            };
+                manufacturerData.Add(manufacturerFaker.Generate());
+            }
 
             modelBuilder.Entity<ManufacturerEntity>().HasData(manufacturerData);
 
 
-            var commodityData = new List<CommodityEntity>()
+            var commodityData = new List<CommodityEntity>();
+            var commodityFaker = new Faker<CommodityEntity>()
+                .RuleFor(c => c.Id, f => f.Random.Guid())
+                .RuleFor(c => c.Name, f => f.Commerce.ProductName())
+                .RuleFor(c => c.Picture, f => f.Image.PicsumUrl())
+                .RuleFor(c => c.Description, f => f.Commerce.ProductDescription())
+                .RuleFor(c => c.Price, f => f.Random.Decimal(1, 1000))
+                .RuleFor(c => c.Weight, f => f.Random.Float(1, 100))
+                .RuleFor(c => c.Quantity, f => f.Random.Int(1, 100))
+                .RuleFor(c => c.CategoryId, f => f.PickRandom(categoryData).Id)
+                .RuleFor(c => c.ManufacturerId, f => f.PickRandom(manufacturerData).Id);
+
+            for (int i = 0; i < 4; i++)
             {
-                new CommodityEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "cmd1",
-                    Picture = "picture.jpg", Description = "desc1", Price = 10,
-                    Weight = 20, Quantity = 2, CategoryId = categoryData[0].Id,
-                    ManufacturerId = manufacturerData[2].Id
-                },
-                new CommodityEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "cmd2",
-                    Picture = "picture.jpg", Description = "desc2", Price = 1,
-                    Weight = 5, Quantity = 2, CategoryId = categoryData[1].Id,
-                    ManufacturerId = manufacturerData[1].Id
-                },
-                new CommodityEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "cmd3",
-                    Picture = "picture.jpg", Description = "desc3", Price = 23254,
-                    Weight = 15, Quantity = 20, CategoryId = categoryData[3].Id,
-                    ManufacturerId = manufacturerData[2].Id
-                },
-                new CommodityEntity()
-                {
-                    Id = Guid.NewGuid(), Name = "cmd4",
-                    Picture = "picture.jpg", Description = "desc4", Price = 55,
-                    Weight = 15, Quantity = 10, CategoryId = categoryData[3].Id,
-                    ManufacturerId = manufacturerData[3].Id
-                },
-            };
+                commodityData.Add(commodityFaker.Generate());
+            }
 
             modelBuilder.Entity<CommodityEntity>().HasData(commodityData);
 
 
-            var ratingData = new List<RatingEntity>()
+            var ratingData = new List<RatingEntity>();
+            var ratingFaker = new Faker<RatingEntity>()
+                .RuleFor(r => r.Id, f => f.Random.Guid())
+                .RuleFor(r => r.Stars, f => f.Random.Int(1, 5))
+                .RuleFor(r => r.Title, f => f.Lorem.Sentence())
+                .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
+                .RuleFor(r => r.CommodityEntityId, f => f.PickRandom(commodityData).Id);
+
+            for (int i = 0; i < 4; i++)
             {
-                new RatingEntity()
-                {
-                    Id = Guid.NewGuid(), Stars = 1,
-                    Title = "title1", Description = "desc1", CommodityEntityId = commodityData[1].Id
-                },
-                new RatingEntity()
-                {
-                    Id = Guid.NewGuid(), Stars = 5,
-                    Title = "title2", Description = "desc2", CommodityEntityId = commodityData[1].Id
-                },
-                new RatingEntity()
-                {
-                    Id = Guid.NewGuid(), Stars = 5,
-                    Title = "title3", Description = "desc3", CommodityEntityId = commodityData[3].Id
-                },
-                new RatingEntity()
-                {
-                    Id = Guid.NewGuid(), Stars = 4,
-                    Title = "title4", Description = "desc4", CommodityEntityId = commodityData[0].Id
-                },
-            };
+                ratingData.Add(ratingFaker.Generate());
+            }
 
             modelBuilder.Entity<RatingEntity>().HasData(ratingData);
         }

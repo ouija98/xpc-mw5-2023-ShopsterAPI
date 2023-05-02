@@ -12,6 +12,12 @@ namespace Shopster.DAL.Repositories
             _context = context;
         }
 
+        public IQueryable<ManufacturerEntity> GetAll()
+        {
+            return _context.Manufacturer
+                .Include(m => m.Commodities);
+        }
+        
         public Guid Create(ManufacturerEntity entity)
         {
             if (entity == null)
@@ -25,25 +31,12 @@ namespace Shopster.DAL.Repositories
             return entity.Id;
         }
         
-        public IEnumerable<ManufacturerEntity> GetAll()
+        
+        public ManufacturerEntity? GetById(Guid id)
         {
             return _context.Manufacturer
                 .Include(m => m.Commodities)
-                .ToList();
-        }
-        
-        public ManufacturerEntity GetById(Guid id)
-        {
-            var manufacturer = _context.Manufacturer
-                .Include(m => m.Commodities)
-                .Single(m => m.Id == id);
-
-            if (manufacturer == null)
-            {
-                throw new ArgumentException($"No entity with id {id} exists in the database.", nameof(id));
-            }
-
-            return manufacturer;
+                .SingleOrDefault(m => m.Id == id);
         }
 
         public ManufacturerEntity Update(ManufacturerEntity entity)
@@ -55,8 +48,12 @@ namespace Shopster.DAL.Repositories
 
             var existingManufacturer = _context.Manufacturer
                 .Include(m => m.Commodities)
-                .Single(m => m.Id == entity.Id);
+                .SingleOrDefault(m => m.Id == entity.Id);
+            if (existingManufacturer == null)
+            {
+                throw new ArgumentException($"Manufacturer with id {entity.Id} does not exist.");
 
+            }
             existingManufacturer.Name = entity.Name;
             existingManufacturer.Description = entity.Description;
             existingManufacturer.Logo = entity.Logo;
