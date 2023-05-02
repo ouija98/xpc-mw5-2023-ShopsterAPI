@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopster", "Shopster\Shopster.csproj", "{7D75894F-757A-42F2-A645-9DD8C4C86DEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopster.API", "Shopster.API\Shopster.API.csproj", "{7D75894F-757A-42F2-A645-9DD8C4C86DEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shopster.DAL", "Shopster.DAL\Shopster.DAL.csproj", "{4C9C742C-CDAC-444C-B887-7DDE01EA901D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7D75894F-757A-42F2-A645-9DD8C4C86DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D75894F-757A-42F2-A645-9DD8C4C86DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D75894F-757A-42F2-A645-9DD8C4C86DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C9C742C-CDAC-444C-B887-7DDE01EA901D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C9C742C-CDAC-444C-B887-7DDE01EA901D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C9C742C-CDAC-444C-B887-7DDE01EA901D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C9C742C-CDAC-444C-B887-7DDE01EA901D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

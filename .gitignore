@@ -95,8 +95,6 @@ packages.config
 project.fragment.lock.json
 artifacts/
 
-# Ignore appsettings.json
-appsettings.json
 
 # Ignore Debug folder
 Debug/
