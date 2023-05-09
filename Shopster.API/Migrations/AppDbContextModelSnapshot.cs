@@ -40,23 +40,23 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e6ca87d1-ad83-a11b-3725-205c718a331d"),
-                            Name = "Beauty & Industrial"
+                            Id = new Guid("1b584c46-d100-2172-ce41-64d305ab319a"),
+                            Name = "Home, Movies & Automotive"
                         },
                         new
                         {
-                            Id = new Guid("66259208-4099-1b19-44f3-00fe98396ef0"),
-                            Name = "Industrial & Games"
+                            Id = new Guid("363fda7d-b502-521b-fe41-ff3fba394296"),
+                            Name = "Jewelery"
                         },
                         new
                         {
-                            Id = new Guid("f535824d-88df-32d0-26a3-7af1f61f848c"),
-                            Name = "Home, Industrial & Music"
+                            Id = new Guid("04a1c8ed-c2de-14ef-fd6d-6500dad28d31"),
+                            Name = "Kids"
                         },
                         new
                         {
-                            Id = new Guid("f6e8dfdd-11a8-38ec-bdf7-962164980a72"),
-                            Name = "Shoes, Clothing & Music"
+                            Id = new Guid("3209796e-f474-83e4-556c-723c7e2fd414"),
+                            Name = "Toys"
                         });
                 });
 
@@ -105,51 +105,51 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f2067f69-9181-4edb-8b36-4346c7906a6a"),
-                            CategoryId = new Guid("f535824d-88df-32d0-26a3-7af1f61f848c"),
-                            Description = "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
-                            ManufacturerId = new Guid("f2a27d99-8874-f369-0f29-0a73a0e38d2e"),
-                            Name = "Licensed Steel Salad",
-                            Picture = "https://picsum.photos/640/480/?image=53",
-                            Price = 69.1803058136518801m,
-                            Quantity = 21,
-                            Weight = 31.15961f
+                            Id = new Guid("badfe16c-bb87-d5a3-38e5-61bb4c04a5db"),
+                            CategoryId = new Guid("04a1c8ed-c2de-14ef-fd6d-6500dad28d31"),
+                            Description = "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+                            ManufacturerId = new Guid("d69b1d33-a213-0b83-7963-a4b32850a676"),
+                            Name = "Intelligent Wooden Sausages",
+                            Picture = "https://picsum.photos/640/480/?image=516",
+                            Price = 928.343069942761954m,
+                            Quantity = 82,
+                            Weight = 89.21891f
                         },
                         new
                         {
-                            Id = new Guid("6659f0ce-e1da-2152-be17-04840fb37d46"),
-                            CategoryId = new Guid("66259208-4099-1b19-44f3-00fe98396ef0"),
+                            Id = new Guid("5dfa00c1-8d8f-1d17-4d3c-cc8f77ebca97"),
+                            CategoryId = new Guid("3209796e-f474-83e4-556c-723c7e2fd414"),
                             Description = "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
-                            ManufacturerId = new Guid("b7afcea0-dc5b-bfa6-e585-b468e58410b1"),
-                            Name = "Generic Plastic Gloves",
-                            Picture = "https://picsum.photos/640/480/?image=968",
-                            Price = 187.411800010754836m,
-                            Quantity = 56,
-                            Weight = 9.5668955f
+                            ManufacturerId = new Guid("0f3066e1-fb28-c250-ef68-f1cb4d010bb1"),
+                            Name = "Small Frozen Soap",
+                            Picture = "https://picsum.photos/640/480/?image=566",
+                            Price = 139.061336612376475m,
+                            Quantity = 57,
+                            Weight = 67.86775f
                         },
                         new
                         {
-                            Id = new Guid("c43d6fc5-c41b-56c1-5735-97515debc14a"),
-                            CategoryId = new Guid("66259208-4099-1b19-44f3-00fe98396ef0"),
-                            Description = "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
-                            ManufacturerId = new Guid("b7afcea0-dc5b-bfa6-e585-b468e58410b1"),
-                            Name = "Gorgeous Cotton Ball",
-                            Picture = "https://picsum.photos/640/480/?image=635",
-                            Price = 737.466697071283744m,
-                            Quantity = 5,
-                            Weight = 95.58386f
+                            Id = new Guid("e68f2ad4-5879-c913-0d34-f75b37b4b71b"),
+                            CategoryId = new Guid("363fda7d-b502-521b-fe41-ff3fba394296"),
+                            Description = "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+                            ManufacturerId = new Guid("d69b1d33-a213-0b83-7963-a4b32850a676"),
+                            Name = "Intelligent Plastic Ball",
+                            Picture = "https://picsum.photos/640/480/?image=688",
+                            Price = 799.454107581933124m,
+                            Quantity = 32,
+                            Weight = 69.24182f
                         },
                         new
                         {
-                            Id = new Guid("43943901-7b1b-935d-d3f6-19ead6e22423"),
-                            CategoryId = new Guid("66259208-4099-1b19-44f3-00fe98396ef0"),
+                            Id = new Guid("f1306022-13c3-8f5d-b27b-5a63d783839e"),
+                            CategoryId = new Guid("3209796e-f474-83e4-556c-723c7e2fd414"),
                             Description = "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit",
-                            ManufacturerId = new Guid("b7afcea0-dc5b-bfa6-e585-b468e58410b1"),
-                            Name = "Small Metal Gloves",
-                            Picture = "https://picsum.photos/640/480/?image=271",
-                            Price = 154.72695226683007m,
-                            Quantity = 60,
-                            Weight = 17.495409f
+                            ManufacturerId = new Guid("af1db8c2-8368-98ec-4164-39539f96941a"),
+                            Name = "Awesome Steel Hat",
+                            Picture = "https://picsum.photos/640/480/?image=714",
+                            Price = 776.32806677054851m,
+                            Quantity = 73,
+                            Weight = 5.5121164f
                         });
                 });
 
@@ -183,35 +183,35 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b7afcea0-dc5b-bfa6-e585-b468e58410b1"),
-                            CountryOfOrigin = "Saint Barthelemy",
-                            Description = "Odit rerum ad illo illum qui. Enim laborum voluptate minus nihil voluptas quia facere architecto aut. Corporis perferendis culpa consectetur aut accusamus. Consequatur labore numquam reprehenderit. Excepturi vitae non vero inventore soluta corporis consectetur. Labore consectetur sit reprehenderit itaque sit aut ut eveniet.",
-                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/564.jpg",
-                            Name = "Kulas - Gutkowski"
+                            Id = new Guid("d69b1d33-a213-0b83-7963-a4b32850a676"),
+                            CountryOfOrigin = "Denmark",
+                            Description = "Culpa aut id distinctio maxime est inventore voluptas. Id vel nesciunt autem. Rerum perferendis assumenda qui vero illo. Dolores omnis officiis repellat et quo autem.",
+                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/311.jpg",
+                            Name = "Boehm LLC"
                         },
                         new
                         {
-                            Id = new Guid("f2a27d99-8874-f369-0f29-0a73a0e38d2e"),
-                            CountryOfOrigin = "Peru",
-                            Description = "Quis voluptatum animi omnis sit ut nesciunt. Dolor officia qui nostrum veniam voluptate. Expedita vel commodi explicabo sapiente molestiae. Ipsum ut temporibus. Recusandae sit maxime consequuntur dolores et facilis et.",
-                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1127.jpg",
-                            Name = "Mueller, Gleichner and Gutkowski"
+                            Id = new Guid("0f3066e1-fb28-c250-ef68-f1cb4d010bb1"),
+                            CountryOfOrigin = "Montserrat",
+                            Description = "Quae neque ipsa non. Illo ab ut quia pariatur. Odit esse nemo. Maiores consectetur nisi inventore voluptatum cupiditate minus asperiores illo. Voluptate qui cum itaque aut sint suscipit quidem at ut.",
+                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/622.jpg",
+                            Name = "Cronin and Sons"
                         },
                         new
                         {
-                            Id = new Guid("29dbf0d1-eb15-0517-30c6-f9bfe9a809f7"),
-                            CountryOfOrigin = "Finland",
-                            Description = "Quia expedita et aut facilis qui. Ut aperiam similique aut optio beatae necessitatibus sed suscipit. Voluptates eveniet voluptatem voluptate quisquam nam quas veniam reprehenderit. Omnis magni blanditiis libero et ipsam sed maiores aut. Natus eaque perspiciatis eum quae dolorem. Id dignissimos voluptatum dolores ea voluptatem nobis.",
-                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/981.jpg",
-                            Name = "Runte - Hayes"
+                            Id = new Guid("65b34595-c643-da79-7b21-f57f290028d0"),
+                            CountryOfOrigin = "Isle of Man",
+                            Description = "Eligendi ut non eos ut fugiat totam tenetur aut. Aut iste molestias et nam cum ea. Optio sit fugiat enim quam aut voluptatem. Quaerat incidunt est ipsam deserunt odio quia sit.",
+                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/10.jpg",
+                            Name = "Greenholt, Effertz and Mitchell"
                         },
                         new
                         {
-                            Id = new Guid("9cb0d800-7504-f20e-719e-416d644847db"),
-                            CountryOfOrigin = "Russian Federation",
-                            Description = "Voluptatum quibusdam sapiente provident porro tenetur perferendis quis perspiciatis. Architecto eum corrupti voluptas omnis odit sed. Ipsam accusantium est distinctio nam voluptatem debitis et.",
-                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/288.jpg",
-                            Name = "Lesch Group"
+                            Id = new Guid("af1db8c2-8368-98ec-4164-39539f96941a"),
+                            CountryOfOrigin = "Haiti",
+                            Description = "Iste est voluptatem tempore mollitia necessitatibus aut. Ut qui ut illum beatae sed error et. Et tempora non sit officiis. Culpa est expedita quis nemo sit. Quis minima minima quisquam quod velit soluta.",
+                            Logo = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/843.jpg",
+                            Name = "Klocko Group"
                         });
                 });
 
@@ -245,35 +245,99 @@ namespace Shopster.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("973d3853-a453-d64c-8025-eda34b8b201b"),
-                            CommodityEntityId = new Guid("6659f0ce-e1da-2152-be17-04840fb37d46"),
-                            Description = "Quia ut velit incidunt et. Est iure occaecati. Vero quibusdam assumenda doloribus et unde ea qui nobis.",
+                            Id = new Guid("8e78a24c-09f0-aacc-56d2-757b45601894"),
+                            CommodityEntityId = new Guid("badfe16c-bb87-d5a3-38e5-61bb4c04a5db"),
+                            Description = "Magni maiores aperiam molestias ipsam. Harum reprehenderit nam libero reprehenderit maxime ut quisquam. Non voluptatum eius.",
                             Stars = 4,
-                            Title = "Laborum eius fugit asperiores ut unde est."
+                            Title = "Quisquam quis iure enim quidem libero."
                         },
                         new
                         {
-                            Id = new Guid("4ff3ef5a-a11e-5779-dec9-bf61a8dbc6d0"),
-                            CommodityEntityId = new Guid("43943901-7b1b-935d-d3f6-19ead6e22423"),
-                            Description = "Quia quo libero aut omnis. Sed aut non dolor provident autem. Cum nihil voluptatem id dolore. Est quia harum qui assumenda ab at. Incidunt id adipisci nihil reiciendis eveniet dolores qui eum.",
-                            Stars = 3,
-                            Title = "Velit possimus in ad pariatur ipsa et est."
+                            Id = new Guid("04eaeae3-d2fa-bbff-a91e-85395a42ebc2"),
+                            CommodityEntityId = new Guid("badfe16c-bb87-d5a3-38e5-61bb4c04a5db"),
+                            Description = "Debitis error quod esse totam. Tempore perspiciatis numquam. Harum placeat architecto ipsa ducimus. Quia et nihil. Pariatur accusantium expedita enim natus in minima.",
+                            Stars = 2,
+                            Title = "Provident pariatur eum consequatur ex id rerum."
                         },
                         new
                         {
-                            Id = new Guid("aa1546ee-393c-4a56-2d8c-b5e4d8d2fa2f"),
-                            CommodityEntityId = new Guid("43943901-7b1b-935d-d3f6-19ead6e22423"),
-                            Description = "Et soluta dolores dolorum voluptatem harum ea esse cupiditate. Distinctio dicta est. Autem magni cum tempora fuga.",
-                            Stars = 3,
-                            Title = "Perspiciatis cumque vero itaque eos et eveniet vel dolores sunt."
+                            Id = new Guid("982e3e77-c57a-baf4-748e-652fc366b3c8"),
+                            CommodityEntityId = new Guid("badfe16c-bb87-d5a3-38e5-61bb4c04a5db"),
+                            Description = "Aut nam quod soluta qui vel perspiciatis. Odit officiis omnis soluta quia sint dolor sunt. Voluptas in et ducimus commodi laboriosam autem perferendis et consequatur. Quae veritatis occaecati et molestiae ut expedita aut ut consequatur.",
+                            Stars = 1,
+                            Title = "Accusantium ipsam voluptatibus."
                         },
                         new
                         {
-                            Id = new Guid("295333c8-d328-f22b-6f88-1c4ad578f52c"),
-                            CommodityEntityId = new Guid("f2067f69-9181-4edb-8b36-4346c7906a6a"),
-                            Description = "Ab tempore iure exercitationem. Culpa sit consequatur aut. Asperiores dignissimos repellat ut accusamus quis quam et nobis consequatur. Animi praesentium nemo unde cupiditate harum eveniet optio. Odit quasi voluptas expedita ea sint numquam. Similique voluptatem molestiae ea et tempora dolores.",
+                            Id = new Guid("a28e72ed-ff40-79ef-989a-a1ba11e37569"),
+                            CommodityEntityId = new Guid("5dfa00c1-8d8f-1d17-4d3c-cc8f77ebca97"),
+                            Description = "Reiciendis dolorem magnam iure et perferendis fuga. Voluptas mollitia repellat aspernatur consequuntur ex voluptas repudiandae odit. Est doloremque illum est aspernatur et magni. In eveniet laudantium.",
+                            Stars = 5,
+                            Title = "Illo pariatur ut et."
+                        },
+                        new
+                        {
+                            Id = new Guid("f8455396-a6d4-b3d0-e324-a82d63ea20ad"),
+                            CommodityEntityId = new Guid("5dfa00c1-8d8f-1d17-4d3c-cc8f77ebca97"),
+                            Description = "Explicabo non quas nostrum a ut ut. Et fuga corrupti. Commodi autem quo est rerum.",
+                            Stars = 5,
+                            Title = "Ea deleniti laudantium dignissimos perferendis."
+                        },
+                        new
+                        {
+                            Id = new Guid("303cf901-d5e2-768c-868d-3ebe66c17b05"),
+                            CommodityEntityId = new Guid("5dfa00c1-8d8f-1d17-4d3c-cc8f77ebca97"),
+                            Description = "Voluptatibus est optio. Iste soluta ipsam quos non quia velit. Voluptates voluptatem nam consequatur voluptas fugit dignissimos et dolor. Et commodi harum.",
+                            Stars = 2,
+                            Title = "Ad occaecati est eos inventore aut."
+                        },
+                        new
+                        {
+                            Id = new Guid("b2d5db21-0627-966f-4f4e-4c3be02f7bd8"),
+                            CommodityEntityId = new Guid("e68f2ad4-5879-c913-0d34-f75b37b4b71b"),
+                            Description = "Omnis fugiat eum harum vel. Est qui est ab esse voluptas odio explicabo. Distinctio quia aspernatur error. Autem cumque doloribus voluptatum soluta dicta amet nesciunt. Mollitia animi et eius expedita officiis labore.",
                             Stars = 3,
-                            Title = "Quos veniam esse est cum inventore."
+                            Title = "Nobis magni ullam nostrum."
+                        },
+                        new
+                        {
+                            Id = new Guid("7a6a07ab-5ab2-8c82-530a-453171d4d3e5"),
+                            CommodityEntityId = new Guid("e68f2ad4-5879-c913-0d34-f75b37b4b71b"),
+                            Description = "Rerum unde quidem ipsam quasi ullam. Quod ex corporis omnis ducimus odio veritatis facere. Quas voluptatem aut tenetur laudantium velit molestiae et. Laboriosam id in. Ut rerum et.",
+                            Stars = 3,
+                            Title = "Rerum omnis numquam occaecati ut iusto delectus reprehenderit eos."
+                        },
+                        new
+                        {
+                            Id = new Guid("f26ceb1c-7727-0204-f7a9-4eeccce40339"),
+                            CommodityEntityId = new Guid("e68f2ad4-5879-c913-0d34-f75b37b4b71b"),
+                            Description = "Rerum repudiandae qui iure eum sed aperiam. Dignissimos dignissimos dicta pariatur veritatis. Et suscipit accusamus aliquam placeat in sit. Voluptas minus omnis culpa.",
+                            Stars = 3,
+                            Title = "Quaerat eum magni dolores autem ullam odit impedit."
+                        },
+                        new
+                        {
+                            Id = new Guid("1f0bb658-dde4-db74-33b2-419e5ce20eaf"),
+                            CommodityEntityId = new Guid("f1306022-13c3-8f5d-b27b-5a63d783839e"),
+                            Description = "Quia sit veritatis soluta fuga neque libero ab nihil beatae. Soluta sunt velit. Natus illum consequatur ipsam iste ut voluptate vel et sit. Quo recusandae distinctio quisquam.",
+                            Stars = 5,
+                            Title = "Et aut ut et impedit officia enim."
+                        },
+                        new
+                        {
+                            Id = new Guid("e3050b5f-b607-c40e-560f-c0465a34ba9a"),
+                            CommodityEntityId = new Guid("f1306022-13c3-8f5d-b27b-5a63d783839e"),
+                            Description = "Consequatur dolorem quaerat qui maiores excepturi vero nemo iste. Nihil sed dolorem voluptate possimus reprehenderit. Quidem vel repudiandae beatae ut fugit aspernatur in. Labore enim voluptates odio ut temporibus.",
+                            Stars = 3,
+                            Title = "Iste hic sit harum maxime et expedita eveniet aperiam."
+                        },
+                        new
+                        {
+                            Id = new Guid("e77b1c0d-e7bb-7fb0-6028-f70fc6d7856d"),
+                            CommodityEntityId = new Guid("f1306022-13c3-8f5d-b27b-5a63d783839e"),
+                            Description = "Quo molestiae pariatur sit voluptatum beatae. Est rerum ut provident autem nostrum iusto optio aut. Blanditiis excepturi tempore velit nihil dolorem omnis vel sapiente. Vitae aut nobis aut dicta quis optio. Voluptates et qui.",
+                            Stars = 3,
+                            Title = "Est veniam distinctio ab minima maiores id."
                         });
                 });
 

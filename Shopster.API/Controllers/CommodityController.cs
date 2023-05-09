@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
 using Shopster.DTOs;
@@ -13,13 +14,15 @@ namespace Shopster.Controllers
     {
         private readonly ILogger<CommodityController> _logger;
         private readonly IRepository<CommodityEntity> _commodityRepository;
+        private readonly IRepository<RatingEntity> _ratingRepository;
         private readonly IMapper _mapper;
 
         public CommodityController(ILogger<CommodityController> logger,
-            IRepository<CommodityEntity> commodityRepository, IMapper mapper)
+            IRepository<CommodityEntity> commodityRepository, IRepository<RatingEntity> ratingRepository, IMapper mapper)
         {
             _logger = logger;
             _commodityRepository = commodityRepository;
+            _ratingRepository = ratingRepository;
             _mapper = mapper;
         }
 
@@ -120,6 +123,66 @@ namespace Shopster.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"Error deleting the commodity: {ex.Message}");
             }
+        }
+        
+        [HttpGet("{commodityId}/ratings")]
+        public IActionResult GetCommodityRatings(Guid commodityId)
+        {
+            var commodity = _commodityRepository.GetById(commodityId);
+
+            if (commodity == null)
+            {
+                _logger.LogWarning($"Commodity with id {commodityId} not found");
+                return NotFound();
+            }
+
+            var ratings = _ratingRepository.GetAll(); // Get all ratings from the repository or database
+            var matchingRatings = ratings.Where(r => r.CommodityEntityId == commodityId);
+            var ratingDTOs = _mapper.Map<IEnumerable<RatingDTO>>(matchingRatings);
+
+            return Ok(ratingDTOs);
+        }
+
+        // Perform the search based on the provided criteria
+        [HttpGet("search")]
+        public IActionResult Search(
+            [FromQuery] string? name,
+            [FromQuery] decimal? minPrice,
+            [FromQuery] decimal? maxPrice,
+            [FromQuery] Guid? categoryId,
+            [FromQuery] int? minRating)
+        {
+            _logger.LogInformation("Performing search with the following criteria: Name={Name}, MinPrice={MinPrice}, MaxPrice={MaxPrice}, CategoryId={CategoryId}, MinRating={MinRating}",
+                name, minPrice, maxPrice, categoryId, minRating);
+
+            var commodities = _commodityRepository.GetAll();
+
+            if (!name.IsNullOrEmpty())
+            {
+                commodities = commodities.Where(c => c.Name.Contains(name));
+            }
+
+            if (minPrice.HasValue)
+            {
+                commodities = commodities.Where(c => c.Price >= minPrice);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                commodities = commodities.Where(c => c.Price <= maxPrice);
+            }
+
+            if (categoryId.HasValue)
+            {
+                commodities = commodities.Where(c => c.CategoryId == categoryId);
+            }
+
+            if (minRating.HasValue)
+            {
+                commodities = commodities.Where(c => c.Ratings.Any(r => r.Stars >= minRating));
+            }
+
+            return Ok(_mapper.ProjectTo<CommodityDTO>(commodities));
         }
     }
 }
