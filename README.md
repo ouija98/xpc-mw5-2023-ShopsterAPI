@@ -11,7 +11,7 @@ To run the project locally, you will need to have .NET Core installed on your ma
 1. Clone the repository to your local machine.
 2. Edit your appsettings.json connection string to database.
 3. Open a terminal or command prompt in the project directory and run the following command to install the required dependencies: `dotnet build`
-4. Run the following command to create and migrate the database: `dotnet ef database update`
+4. Enter directory of Shopster.API and run the following command to create and migrate the database: `dotnet ef database update`
 5. Finally, run the following command to start the application: `dotnet run`
 ## Endpoints
 
