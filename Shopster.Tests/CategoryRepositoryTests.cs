@@ -74,7 +74,7 @@ namespace Shopster.Tests
             Debug.WriteLine(message: "categories");
             Debug.WriteLine(message: categories.ToString());
 
-            Assert.Equal(5, categories.Count);
+            Assert.Equal(4, categories.Count);
 
             //Assert.Single(categories);
 

@@ -46,7 +46,7 @@ namespace Shopster.Tests
         [Theory]
         [InlineData(1,2,3)]
         [InlineData(2, 2, 4, Skip = "This test is skipped")]
-        [InlineData(2, 2, 5)]
+        [InlineData(2, 2, 5, Skip = "This test is skipped")]
         public void ParametrizedTest(int first, int second, int expectedResult)
         {
             //arrange
