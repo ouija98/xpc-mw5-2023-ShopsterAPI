@@ -15,13 +15,13 @@ To run the project locally, you will need to have .NET Core installed on your ma
 5. Finally, run the following command to start the application: `dotnet run`
 ## Endpoints
 
-- `/api/commodities`: Provides CRUD operations for commodities.
-- `/api/manufacturers`: Provides CRUD operations for manufacturers.
-- `/api/ratings`: Provides CRUD operations for ratings.
-- `/api/categories`: Provides CRUD operations for categories.
+* `/api/commodity`: Provides CRUD operations for commodities.
+    * `/commodity/search`: Allows searching for commodities based on specific criteria such as name, price range, category, and minimum rating.
+* `/api/manufacturer`: Provides CRUD operations for manufacturers.
+* `/api/rating`: Provides CRUD operations for ratings.
+    * `/rating/{commodityId}/rating`: Retrieves the ratings associated with a specific commodity identified by the {`commodityId`} parameter.
+* `/api/category`: Provides CRUD operations for categories.
 
-- `api/commodities/search`: Allows searching for commodities based on specific criteria such as name, price range, category, and minimum rating.
-- `/api/ratings/{commodityId}/rating`: Retrieves the ratings associated with a specific commodity identified by the {`commodityId`} parameter.
 
 ## Creators
 
