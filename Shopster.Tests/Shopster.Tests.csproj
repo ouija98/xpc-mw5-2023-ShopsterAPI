@@ -21,4 +21,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shopster.API\Shopster.API.csproj" />
+    <ProjectReference Include="..\Shopster.DAL\Shopster.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
