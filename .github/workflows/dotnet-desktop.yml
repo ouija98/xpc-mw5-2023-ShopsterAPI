@@ -5,8 +5,10 @@ name: Build .NET Core Desktop
 on:
   push:
     branches: [ "main" ]
+    branches: [ "CI_built_test" ]
   pull_request:
     branches: [ "main" ]
+    branches: [ "CI_built_test" ]
 
 jobs:
 
