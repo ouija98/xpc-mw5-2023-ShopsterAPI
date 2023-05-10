@@ -20,6 +20,9 @@ To run the project locally, you will need to have .NET Core installed on your ma
 - `/api/ratings`: Provides CRUD operations for ratings.
 - `/api/categories`: Provides CRUD operations for categories.
 
+- `api/commodities/search`: Allows searching for commodities based on specific criteria such as name, price range, category, and minimum rating.
+- `/api/ratings/{commodityId}/rating`: Retrieves the ratings associated with a specific commodity identified by the {`commodityId`} parameter.
+
 ## Creators
 
 - Bartkova Tereza
