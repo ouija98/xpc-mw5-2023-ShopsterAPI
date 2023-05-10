@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories.Interfaces;
 
@@ -13,7 +14,7 @@ namespace Shopster.DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<CommodityEntity> GetAll()
+        public IEnumerable<CommodityEntity> Get()
         {
             return _context.Commodity
                 .Include(c => c.Category)
@@ -47,7 +48,6 @@ namespace Shopster.DAL.Repositories
                 .Include(c => c.Manufacturer)
                 .Include(c => c.Ratings).ToList()
                 .SingleOrDefault(s => s.Id == id);
-
         }
 
         public CommodityEntity Update(CommodityEntity entity)
@@ -61,7 +61,6 @@ namespace Shopster.DAL.Repositories
             if (existingCommodity == null)
             {
                 throw new ArgumentException($"Commodity with id {entity.Id} does not exist.");
-
             }
 
             existingCommodity.Name = entity.Name;
@@ -111,9 +110,9 @@ namespace Shopster.DAL.Repositories
         }
 
         public IEnumerable<CommodityEntity> Search(string? name, decimal? minPrice, decimal? maxPrice, Guid? categoryId,
-            int? minRating)
+            int? minRating, string? manufacturerIdOrName)
         {
-            var commodities = GetAll();
+            var commodities = Get();
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -140,9 +139,52 @@ namespace Shopster.DAL.Repositories
                 commodities = commodities.Where(c => c.Ratings != null && c.Ratings.Any(r => r.Stars >= minRating));
             }
 
+            if (!string.IsNullOrEmpty(manufacturerIdOrName))
+            {
+                commodities = commodities.Where(c =>
+                    c.Manufacturer.Id.ToString() == manufacturerIdOrName ||
+                    c.Manufacturer.Name.Contains(manufacturerIdOrName!));
+            }
+
             return commodities;
         }
 
+        public IEnumerable<CommodityEntity> GetTopRatedCommodities()
+        {
+            return _context.Commodity
+                .Where(c => c.Ratings != null && c.Ratings.Any()) // Filter out commodities without ratings
+                .OrderByDescending(c => c.Ratings.Average(r => r.Stars))
+                .ToList();
+        }
+        
+        public IEnumerable<CommodityEntity> Sort(IEnumerable<CommodityEntity> commodities, string sort)
+        {
+            var sortParams = sort.Split(':');
+            var sortBy = sortParams[0].ToLower();
+            var sortOrder = sortParams.Length > 1 && sortParams[1].ToLower() == "desc"
+                ? SortOrder.Descending
+                : SortOrder.Ascending;
 
+            switch (sortBy)
+            {
+                case "name":
+                    commodities = sortOrder == SortOrder.Descending
+                        ? commodities.OrderByDescending(c => c.Name)
+                        : commodities.OrderBy(c => c.Name);
+                    break;
+                case "price":
+                    commodities = sortOrder == SortOrder.Descending
+                        ? commodities.OrderByDescending(c => c.Price)
+                        : commodities.OrderBy(c => c.Price);
+                    break;
+                case "rating":
+                    commodities = sortOrder == SortOrder.Descending
+                        ? commodities.OrderByDescending(c => c.Ratings.Average(r => r.Stars))
+                        : commodities.OrderBy(c => c.Ratings.Average(r => r.Stars));
+                    break;
+            }
+
+            return commodities;
+        }
     }
 }

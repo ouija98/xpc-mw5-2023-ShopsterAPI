@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Shopster.DAL.Entities;
-using Shopster.DAL.Repositories;
 using Shopster.DAL.Repositories.Interfaces;
 using Shopster.DTOs;
 
@@ -25,15 +23,17 @@ namespace Shopster.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get(int page = 1, int size = 10)
         {
             try
             {
+                int skip = (page - 1) * size;
+                
                 _logger.LogInformation("Getting all commodities");
-                var commodities = _commodityRepository.GetAll();
+                var commodities = _commodityRepository.Get().Skip(skip).Take(size);;
                 _logger.LogInformation($"Retrieved {commodities.Count()} commodities.");
-                var commodityDtOs = _mapper.Map<IEnumerable<CommodityDTO>>(commodities);
-                return Ok(commodityDtOs);
+                var commodityDTOs = _mapper.Map<IEnumerable<CommodityDTO>>(commodities);
+                return Ok(commodityDTOs);
             }
             catch (Exception ex)
             {
@@ -144,15 +144,53 @@ namespace Shopster.Controllers
             [FromQuery] decimal? minPrice,
             [FromQuery] decimal? maxPrice,
             [FromQuery] Guid? categoryId,
-            [FromQuery] int? minRating)
+            [FromQuery] int? minRating,
+            [FromQuery] string? manufacturerFilter, // manufacturer name or id
+            [FromQuery] string? sort = "name:asc") 
         {
-            _logger.LogInformation("Performing search with the following criteria: Name={Name}, MinPrice={MinPrice}, MaxPrice={MaxPrice}, CategoryId={CategoryId}, MinRating={MinRating}",
-                name, minPrice, maxPrice, categoryId, minRating);
+            _logger.LogInformation("Performing search with the following criteria: Name={Name}, MinPrice={MinPrice}, MaxPrice={MaxPrice}, CategoryId={CategoryId}, MinRating={MinRating}, ManufacturerIdOrName={ManufacturerIdOrName}, Sort={Sort}",
+                name, minPrice, maxPrice, categoryId, minRating, manufacturerFilter, sort);
 
-            var commodities = _commodityRepository.Search(name, minPrice, maxPrice, categoryId, minRating);
-            var commodityDtos = _mapper.Map<IEnumerable<CommodityDTO>>(commodities);
+            var commodities = _commodityRepository.Search(name, minPrice, maxPrice, categoryId, minRating, manufacturerFilter);
+            
+            if (!string.IsNullOrEmpty(sort))
+            {
+                commodities = _commodityRepository.Sort(commodities, sort);
+            }
+            
+            var commodityDTOs = _mapper.Map<IEnumerable<CommodityDTO>>(commodities);
 
-            return Ok(commodityDtos);
+            return Ok(commodityDTOs);
         }
+
+        [HttpGet("top-rated")]
+        public IActionResult GetTopRatedCommodities(int page = 1, int size = 10)
+        {
+            try
+            {
+                int skip = (page - 1) * size;
+                
+                _logger.LogInformation("Retrieving top-rated commodities");
+
+                var topRatedCommodities = _commodityRepository.GetTopRatedCommodities().Skip(skip).Take(size);
+        
+                if (!topRatedCommodities.Any())
+                {
+                    _logger.LogInformation("No commodities found");
+                    return NotFound();
+                }
+        
+                var topRatedCommoditiesDto = _mapper.Map<IEnumerable<CommodityDTO>>(topRatedCommodities);
+
+                _logger.LogInformation("Top-rated commodities retrieved");
+                return Ok(topRatedCommoditiesDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving top-rated commodities");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the top-rated commodities. Please try again later.");
+            }
+        }
+
     }
 }

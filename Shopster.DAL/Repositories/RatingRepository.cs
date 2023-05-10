@@ -63,7 +63,7 @@ namespace Shopster.DAL.Repositories
             }
         }
 
-        public IEnumerable<RatingEntity> GetAll()
+        public IEnumerable<RatingEntity> Get()
         {
             return _context.Rating
                 .Include(r => r.Commodity);

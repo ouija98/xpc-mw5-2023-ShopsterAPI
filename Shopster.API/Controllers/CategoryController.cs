@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DAL.Repositories.Interfaces;
 using Shopster.DTOs;
 
 namespace Shopster.Controllers
@@ -24,12 +25,16 @@ namespace Shopster.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get(int page = 1, int size = 10)
         {
+            
             try
             {
+                // Calculate the number of items to skip
+                int skip = (page - 1) * size;
+                
                 _logger.LogInformation("Getting all categories");
-                var categories = _categoryRepository.GetAll();
+                var categories = _categoryRepository.Get().Skip(skip).Take(size);
                 _logger.LogInformation($"Retrieved {categories.Count()} categories.");
                 var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
                 return Ok(categoriesDto);

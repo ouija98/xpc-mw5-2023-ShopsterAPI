@@ -24,12 +24,14 @@ namespace Shopster.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get(int page = 1, int size = 10)
         {
             try
             {
+                int skip = (page - 1) * size;
+                
                 _logger.LogInformation("Getting all ratings");
-                var ratings = _ratingRepository.GetAll();
+                var ratings = _ratingRepository.Get().Skip(skip).Take(size);;
                 _logger.LogInformation($"Retrieved {ratings.Count()} ratings.");
                 var ratingDTOs = _mapper.Map<IEnumerable<RatingDTO>>(ratings);
                 return Ok(ratingDTOs);

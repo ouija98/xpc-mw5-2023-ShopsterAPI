@@ -1,6 +1,6 @@
 ﻿using Shopster.DAL.Entities;
 
-namespace Shopster.DAL.Repositories;
+namespace Shopster.DAL.Repositories.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : class, IEntity
 {
@@ -8,5 +8,5 @@ public interface IRepository<TEntity> where TEntity : class, IEntity
     TEntity? GetById(Guid id);
     TEntity Update(TEntity entity);
     void Delete(Guid id);
-    IEnumerable<TEntity> GetAll();
+    IEnumerable<TEntity> Get();
 }

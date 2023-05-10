@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopster.DAL.Entities;
+using Shopster.DAL.Repositories.Interfaces;
 
 namespace Shopster.DAL.Repositories
 {
@@ -12,7 +13,7 @@ namespace Shopster.DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<CategoryEntity> GetAll()
+        public IEnumerable<CategoryEntity> Get()
         {
             return _context.Category
                 .Include(c => c.Commodities);
