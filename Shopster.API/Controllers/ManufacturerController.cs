@@ -26,9 +26,19 @@ namespace Shopster.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            _logger.LogInformation("Retrieving all manufacturers");
-            var manufacturers=  _manufacturerRepository.GetAll().ProjectTo<ManufacturerDTO>(_mapper.ConfigurationProvider);
-            return Ok(manufacturers);
+            try
+            {
+                _logger.LogInformation("Getting all manufacturers");
+                var manufacturers = _manufacturerRepository.GetAll();
+                _logger.LogInformation($"Retrieved {manufacturers.Count()} manufacturers.");
+                var manufacturerDTOs = _mapper.Map<IEnumerable<ManufacturerDTO>>(manufacturers);
+                return Ok(manufacturerDTOs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving manufacturers.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving manufacturers. Please try again later.");
+            }
         }
 
         [HttpGet("{id}")]
@@ -68,11 +78,11 @@ namespace Shopster.Controllers
             {
                 _logger.LogError(ex, "Error inserting the manufacturer");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error inserting the manufacturer: {ex.Message}");
+                    $"Error inserting the manufacturer!");
             }
         }
 
-
+        
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] ManufacturerDTO manufacturerDTO)
         {
@@ -89,12 +99,22 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(manufacturerDTO, existingManufacturer);
+            try
+            {
+                _mapper.Map(manufacturerDTO, existingManufacturer);
 
-            _manufacturerRepository.Update(existingManufacturer);
-            _logger.LogInformation("Manufacturer with ID {id} updated", id);
-            return Ok(_mapper.Map<ManufacturerDTO>(existingManufacturer));
+                _manufacturerRepository.Update(existingManufacturer);
+                _logger.LogInformation("Manufacturer with ID {id} updated", id);
+                return Ok(_mapper.Map<ManufacturerDTO>(existingManufacturer));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating the manufacturer");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error updating the manufacturer!");
+            }
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)

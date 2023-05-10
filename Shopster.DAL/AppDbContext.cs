@@ -22,22 +22,6 @@ namespace Shopster.DAL
             base.OnModelCreating(modelBuilder);
             
             modelBuilder.Entity<CategoryEntity>()
-                .Property(c => c.Id)
-                .HasDefaultValueSql("NEWID()");
-
-            modelBuilder.Entity<ManufacturerEntity>()
-                .Property(m => m.Id)
-                .HasDefaultValueSql("NEWID()");
-
-            modelBuilder.Entity<RatingEntity>()
-                .Property(r => r.Id)
-                .HasDefaultValueSql("NEWID()");
-
-            modelBuilder.Entity<CommodityEntity>()
-                .Property(c => c.Id)
-                .HasDefaultValueSql("NEWID()");
-
-            modelBuilder.Entity<CategoryEntity>()
                 .HasMany(c => c.Commodities)
                 .WithOne(c => c.Category)
                 .HasForeignKey(c => c.CategoryId);

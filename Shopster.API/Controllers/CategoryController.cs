@@ -28,17 +28,19 @@ namespace Shopster.Controllers
         {
             try
             {
-                var categories = _categoryRepository.GetAll().ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider);
+                _logger.LogInformation("Getting all categories");
+                var categories = _categoryRepository.GetAll();
                 _logger.LogInformation($"Retrieved {categories.Count()} categories.");
-                return Ok(categories);
+                var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+                return Ok(categoriesDto);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving categories.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error retrieving categories: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving categories. Please try again later.");
             }
         }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
@@ -85,7 +87,7 @@ namespace Shopster.Controllers
             {
                 _logger.LogError(ex, $"Error inserting category with id {categoryDTO.Id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error inserting the category: {ex.Message}");
+                    $"Error inserting the category.");
             }
         }
 
@@ -119,7 +121,7 @@ namespace Shopster.Controllers
             {
                 _logger.LogError(ex, $"Error updating category with id {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error updating the category: {ex.Message}");
+                    $"Error updating the category.");
             }
         }
 
@@ -144,7 +146,7 @@ namespace Shopster.Controllers
             {
                 _logger.LogError(ex, $"Error deleting category with id {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error deleting the category: {ex.Message}");
+                    $"Error deleting the category!");
             }
         }
     }

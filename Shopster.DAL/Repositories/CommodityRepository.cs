@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopster.DAL.Entities;
+using Shopster.DAL.Repositories.Interfaces;
 
 namespace Shopster.DAL.Repositories
 {
-    public class CommodityRepository : IRepository<CommodityEntity>
+    public class CommodityRepository : ICommodityRepository
     {
         private readonly AppDbContext _context;
 
@@ -12,13 +13,14 @@ namespace Shopster.DAL.Repositories
             _context = context;
         }
 
-        public IQueryable<CommodityEntity> GetAll()
+        public IEnumerable<CommodityEntity> GetAll()
         {
             return _context.Commodity
                 .Include(c => c.Category)
-                .Include(c => c.Manufacturer);
+                .Include(c => c.Manufacturer)
+                .Include(c => c.Ratings).ToList();
         }
-        
+
         public Guid Create(CommodityEntity entity)
         {
             if (entity is null)
@@ -26,24 +28,26 @@ namespace Shopster.DAL.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            foreach (var rating in entity.Ratings)
-            {
-                _context.Rating.Add(rating);
-            }
+            if (entity.Ratings != null)
+                foreach (var rating in entity.Ratings)
+                {
+                    _context.Rating.Add(rating);
+                }
 
             _context.Commodity.Add(entity);
             _context.SaveChanges();
 
             return entity.Id;
         }
-        
+
         public CommodityEntity? GetById(Guid id)
         {
             return _context.Commodity
                 .Include(c => c.Category)
                 .Include(c => c.Manufacturer)
+                .Include(c => c.Ratings).ToList()
                 .SingleOrDefault(s => s.Id == id);
-            
+
         }
 
         public CommodityEntity Update(CommodityEntity entity)
@@ -105,5 +109,40 @@ namespace Shopster.DAL.Repositories
             _context.Commodity.Remove(commodity);
             _context.SaveChanges();
         }
+
+        public IEnumerable<CommodityEntity> Search(string? name, decimal? minPrice, decimal? maxPrice, Guid? categoryId,
+            int? minRating)
+        {
+            var commodities = GetAll();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                commodities = commodities.Where(c => c.Name.Contains(name!));
+            }
+
+            if (minPrice.HasValue)
+            {
+                commodities = commodities.Where(c => c.Price >= minPrice);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                commodities = commodities.Where(c => c.Price <= maxPrice);
+            }
+
+            if (categoryId.HasValue)
+            {
+                commodities = commodities.Where(c => c.CategoryId == categoryId);
+            }
+
+            if (minRating.HasValue)
+            {
+                commodities = commodities.Where(c => c.Ratings != null && c.Ratings.Any(r => r.Stars >= minRating));
+            }
+
+            return commodities;
+        }
+
+
     }
 }

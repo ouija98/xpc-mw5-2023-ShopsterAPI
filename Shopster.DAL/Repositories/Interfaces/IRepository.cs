@@ -8,5 +8,5 @@ public interface IRepository<TEntity> where TEntity : class, IEntity
     TEntity? GetById(Guid id);
     TEntity Update(TEntity entity);
     void Delete(Guid id);
-    IQueryable<TEntity> GetAll();
+    IEnumerable<TEntity> GetAll();
 }

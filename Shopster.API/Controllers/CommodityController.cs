@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DAL.Repositories.Interfaces;
 using Shopster.DTOs;
 
 namespace Shopster.Controllers
@@ -13,26 +13,35 @@ namespace Shopster.Controllers
     public class CommodityController : ControllerBase
     {
         private readonly ILogger<CommodityController> _logger;
-        private readonly IRepository<CommodityEntity> _commodityRepository;
-        private readonly IRepository<RatingEntity> _ratingRepository;
+        private readonly ICommodityRepository _commodityRepository;
         private readonly IMapper _mapper;
 
         public CommodityController(ILogger<CommodityController> logger,
-            IRepository<CommodityEntity> commodityRepository, IRepository<RatingEntity> ratingRepository, IMapper mapper)
+            ICommodityRepository commodityRepository, IMapper mapper)
         {
             _logger = logger;
             _commodityRepository = commodityRepository;
-            _ratingRepository = ratingRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            _logger.LogInformation("Getting all commodities");
-            var commodities = _commodityRepository.GetAll().ProjectTo<CommodityDTO>(_mapper.ConfigurationProvider);
-            return Ok(commodities);
+            try
+            {
+                _logger.LogInformation("Getting all commodities");
+                var commodities = _commodityRepository.GetAll();
+                _logger.LogInformation($"Retrieved {commodities.Count()} commodities.");
+                var commodityDtOs = _mapper.Map<IEnumerable<CommodityDTO>>(commodities);
+                return Ok(commodityDtOs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving commodities.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving commodities. Please try again later.");
+            }
         }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
@@ -53,12 +62,6 @@ namespace Shopster.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] CommodityDTO commodityDto)
         {
-            if (commodityDto == null)
-            {
-                _logger.LogError("Commodity object is null");
-                return BadRequest("The commodity object is null");
-            }
-
             try
             {
                 var commodity = _mapper.Map<CommodityEntity>(commodityDto);
@@ -70,14 +73,14 @@ namespace Shopster.Controllers
             {
                 _logger.LogError($"Error inserting the commodity: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error inserting the commodity: {ex.Message}");
+                    $"Error inserting the commodity!");
             }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] CommodityDTO commodityDTO)
+        public IActionResult Update(Guid id, [FromBody] CommodityDTO commodityDto)
         {
-            if (commodityDTO == null || commodityDTO.Id != id)
+            if (commodityDto.Id != id)
             {
                 _logger.LogError($"Invalid commodity object or commodity ID: {id}");
                 return BadRequest();
@@ -91,12 +94,21 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(commodityDTO, existingCommodity);
+            try
+            {
+                _mapper.Map(commodityDto, existingCommodity);
 
-            _logger.LogInformation($"Updating commodity with id {id}");
-            _commodityRepository.Update(existingCommodity);
+                _logger.LogInformation($"Updating commodity with id {id}");
+                _commodityRepository.Update(existingCommodity);
 
-            return Ok(_mapper.Map<CommodityDTO>(existingCommodity));
+                return Ok(_mapper.Map<CommodityDTO>(existingCommodity));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating commodity with id {id}");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error updating the commodity!");
+            }
         }
 
         [HttpDelete("{id}")]
@@ -121,26 +133,8 @@ namespace Shopster.Controllers
             {
                 _logger.LogError(ex, $"Error deleting commodity with ID {id}");
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error deleting the commodity: {ex.Message}");
+                    $"Error deleting the commodity!");
             }
-        }
-        
-        [HttpGet("{commodityId}/ratings")]
-        public IActionResult GetCommodityRatings(Guid commodityId)
-        {
-            var commodity = _commodityRepository.GetById(commodityId);
-
-            if (commodity == null)
-            {
-                _logger.LogWarning($"Commodity with id {commodityId} not found");
-                return NotFound();
-            }
-
-            var ratings = _ratingRepository.GetAll(); // Get all ratings from the repository or database
-            var matchingRatings = ratings.Where(r => r.CommodityEntityId == commodityId);
-            var ratingDTOs = _mapper.Map<IEnumerable<RatingDTO>>(matchingRatings);
-
-            return Ok(ratingDTOs);
         }
 
         // Perform the search based on the provided criteria
@@ -155,34 +149,10 @@ namespace Shopster.Controllers
             _logger.LogInformation("Performing search with the following criteria: Name={Name}, MinPrice={MinPrice}, MaxPrice={MaxPrice}, CategoryId={CategoryId}, MinRating={MinRating}",
                 name, minPrice, maxPrice, categoryId, minRating);
 
-            var commodities = _commodityRepository.GetAll();
+            var commodities = _commodityRepository.Search(name, minPrice, maxPrice, categoryId, minRating);
+            var commodityDtos = _mapper.Map<IEnumerable<CommodityDTO>>(commodities);
 
-            if (!name.IsNullOrEmpty())
-            {
-                commodities = commodities.Where(c => c.Name.Contains(name));
-            }
-
-            if (minPrice.HasValue)
-            {
-                commodities = commodities.Where(c => c.Price >= minPrice);
-            }
-
-            if (maxPrice.HasValue)
-            {
-                commodities = commodities.Where(c => c.Price <= maxPrice);
-            }
-
-            if (categoryId.HasValue)
-            {
-                commodities = commodities.Where(c => c.CategoryId == categoryId);
-            }
-
-            if (minRating.HasValue)
-            {
-                commodities = commodities.Where(c => c.Ratings.Any(r => r.Stars >= minRating));
-            }
-
-            return Ok(_mapper.ProjectTo<CommodityDTO>(commodities));
+            return Ok(commodityDtos);
         }
     }
 }

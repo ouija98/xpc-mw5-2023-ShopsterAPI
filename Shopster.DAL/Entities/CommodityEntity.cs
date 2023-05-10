@@ -12,6 +12,6 @@
         public CategoryEntity Category { get; set; } = null!;
         public Guid ManufacturerId { get; set; }
         public ManufacturerEntity Manufacturer { get; set; } = null!;
-        public ICollection<RatingEntity>? Ratings { get;  } = new List<RatingEntity>();
+        public ICollection<RatingEntity>? Ratings { get; set; } = new List<RatingEntity>();
     }
 }

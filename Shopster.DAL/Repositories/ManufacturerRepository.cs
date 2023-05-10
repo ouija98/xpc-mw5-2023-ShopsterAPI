@@ -12,7 +12,7 @@ namespace Shopster.DAL.Repositories
             _context = context;
         }
 
-        public IQueryable<ManufacturerEntity> GetAll()
+        public IEnumerable<ManufacturerEntity> GetAll()
         {
             return _context.Manufacturer
                 .Include(m => m.Commodities);

@@ -1,9 +1,8 @@
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Shopster;
 using Shopster.DAL;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DAL.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +21,8 @@ builder.Services.AddSwaggerGen();
 // Add repository dependency
 builder.Services.AddTransient<IRepository<CategoryEntity>, CategoryRepository>();
 builder.Services.AddTransient<IRepository<ManufacturerEntity>, ManufacturerRepository>();
-builder.Services.AddTransient<IRepository<RatingEntity>, RatingRepository>();
-builder.Services.AddTransient<IRepository<CommodityEntity>, CommodityRepository>();
+builder.Services.AddTransient<IRatingRepository, RatingRepository>();
+builder.Services.AddTransient<ICommodityRepository, CommodityRepository>();
 
 
 // Add DbContext dependency

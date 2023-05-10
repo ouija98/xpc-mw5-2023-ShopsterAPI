@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Shopster.DAL.Entities;
 using Shopster.DAL.Repositories;
+using Shopster.DAL.Repositories.Interfaces;
 using Shopster.DTOs;
 
 namespace Shopster.Controllers
@@ -11,11 +11,11 @@ namespace Shopster.Controllers
     [Route("[controller]")]
     public class RatingController : ControllerBase
     {
-        private readonly IRepository<RatingEntity> _ratingRepository;
+        private readonly IRatingRepository _ratingRepository;
         private readonly ILogger<RatingController> _logger;
         private readonly IMapper _mapper;
 
-        public RatingController(IRepository<RatingEntity> ratingRepository, ILogger<RatingController> logger,
+        public RatingController(IRatingRepository ratingRepository, ILogger<RatingController> logger,
             IMapper mapper)
         {
             _ratingRepository = ratingRepository;
@@ -26,10 +26,21 @@ namespace Shopster.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            _logger.LogInformation("Getting all ratings");
-            var ratings = _ratingRepository.GetAll().ProjectTo<RatingDTO>(_mapper.ConfigurationProvider);
-            return Ok(ratings);
+            try
+            {
+                _logger.LogInformation("Getting all ratings");
+                var ratings = _ratingRepository.GetAll();
+                _logger.LogInformation($"Retrieved {ratings.Count()} ratings.");
+                var ratingDTOs = _mapper.Map<IEnumerable<RatingDTO>>(ratings);
+                return Ok(ratingDTOs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving ratings.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving ratings. Please try again later.");
+            }
         }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
@@ -48,9 +59,9 @@ namespace Shopster.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] RatingDTO ratingDTO)
+        public IActionResult Add([FromBody] RatingDTO ratingDto)
         {
-            if (ratingDTO == null)
+            if (ratingDto == null)
             {
                 _logger.LogWarning("Rating object is null");
                 return BadRequest("The rating object is null");
@@ -58,7 +69,7 @@ namespace Shopster.Controllers
 
             try
             {
-                var rating = _mapper.Map<RatingEntity>(ratingDTO);
+                var rating = _mapper.Map<RatingEntity>(ratingDto);
                 _logger.LogInformation($"Inserting new rating with title {rating.Title}");
                 var addedRatingId = _ratingRepository.Create(rating);
                 return Ok(addedRatingId);
@@ -71,9 +82,9 @@ namespace Shopster.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] RatingDTO ratingDTO)
+        public IActionResult Update(Guid id, [FromBody] RatingDTO ratingDto)
         {
-            if (ratingDTO == null)
+            if (ratingDto == null)
             {
                 _logger.LogWarning("Rating object is null");
                 return BadRequest();
@@ -86,7 +97,7 @@ namespace Shopster.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(ratingDTO, existingRating);
+            _mapper.Map(ratingDto, existingRating);
             _logger.LogInformation($"Updating rating with id {id}");
             _ratingRepository.Update(existingRating);
             return Ok(_mapper.Map<RatingDTO>(existingRating));
@@ -105,6 +116,15 @@ namespace Shopster.Controllers
             _logger.LogInformation($"Deleting rating with id {id}");
             _ratingRepository.Delete(id);
             return Ok(_mapper.Map<RatingDTO>(existingRating));
+        }
+        
+        [HttpGet("{commodityId}/ratings")]
+        public IActionResult GetCommodityRatings(Guid commodityId)
+        {
+            var ratings = _ratingRepository.GetRatingsByCommodityId(commodityId);
+            var ratingDtOs = _mapper.Map<IEnumerable<RatingDTO>>(ratings);
+
+            return Ok(ratingDtOs);
         }
     }
 }

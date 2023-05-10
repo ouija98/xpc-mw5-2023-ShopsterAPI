@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shopster.DAL.Entities;
+using Shopster.DAL.Repositories.Interfaces;
 
 namespace Shopster.DAL.Repositories
 {
-    public class RatingRepository : IRepository<RatingEntity>
+    public class RatingRepository : IRatingRepository
     {
         private readonly AppDbContext _context;
 
@@ -62,10 +63,16 @@ namespace Shopster.DAL.Repositories
             }
         }
 
-        public IQueryable<RatingEntity> GetAll()
+        public IEnumerable<RatingEntity> GetAll()
         {
             return _context.Rating
                 .Include(r => r.Commodity);
         }
+        
+        public IEnumerable<RatingEntity> GetRatingsByCommodityId(Guid commodityId)
+        {
+            return _context.Rating.Where(r => r.CommodityEntityId == commodityId).ToList();
+        }
+        
     }
 }
