@@ -26,7 +26,7 @@ namespace Shopster.Tests.APItests
             var responseBody = await response.Content.ReadAsStringAsync();
                 
             var categories = JsonConvert.DeserializeObject<List<CategoryEntity>>(responseBody);
-            categories.Should().HaveCount(4);
+            categories.Should().HaveCount(5);
 
             categories[0].Name.Should().Be("ctg10");
         }
