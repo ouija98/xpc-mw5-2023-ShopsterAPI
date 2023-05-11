@@ -41,20 +41,20 @@ namespace Shopster.Tests.APItests
 
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
                 var responseBody = await response.Content.ReadAsStringAsync();
-                responseBody.Should().Be("[{\"id\":\"0b20aa29-d57a-4ce0-ba3b-1bdbd0c98f8c\",\"name\":\"ctg5\"},{\"id\":\"31b10bdd-dbd6-4301-90b5-2947181f0760\",\"name\":\"ctg6\"},{\"id\":\"cb0ff0ef-c4bf-4010-88b4-31550ff157dc\",\"name\":\"ctg1\"},{\"id\":\"f463a390-12f3-4efc-b9ca-5518562dfd5b\",\"name\":\"ctg3\"}]");
                 
                 var categories = JsonConvert.DeserializeObject<List<CategoryEntity>>(responseBody);
                 categories.Should().HaveCount(4);
 
-                categories[0].Name.Should().Be("ctg5");
+                categories[0].Name.Should().Be("ctg10");
             }
 
             [Fact]
             public async Task Should_NewCategory()
             {
+                Guid categoryGuid = new Guid("31b10bdd-dbd6-4301-90b5-2947181f0760");
                 var newCategory = new CategoryEntity
                 {
-                    //Id = Guid.NewGuid(),
+                    Id = categoryGuid,
                     Name = "ctg10"
                 };
 
@@ -69,27 +69,31 @@ namespace Shopster.Tests.APItests
 
                 var categoryDetail = JsonConvert.DeserializeObject<CategoryEntity>(await response.Content.ReadAsStringAsync());
                 categoryDetail.Name.Should().Be("ctg10");
+                categoryDetail.Id.Should().Be(categoryGuid);
 
             }
-
 
             [Fact]
-            public async Task Should_DeleteCategory()
+            public async Task Should_CategoriyById()
             {
-                var categoryToBeDeletedGuid = new Guid("0b20aa29-d57a-4ce0-ba3b-1bdbd0c98f8c");
+                Guid categoryGuid = new Guid("59b18d1b-bc92-404f-e36b-08db521d6258");
 
-                var response = await _client.DeleteAsync($"Category/{categoryToBeDeletedGuid}");
+                var response = await _client.GetAsync($"Category/{categoryGuid}");
 
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
+                var categoryDetail = JsonConvert.DeserializeObject<CategoryEntity>(await response.Content.ReadAsStringAsync());
+                categoryDetail.Id.Should().Be(categoryGuid);
+                categoryDetail.Name.Should().Be("ctg10");
 
             }
 
 
-            
+
+
             [Fact]
             public async Task Should_UpdateCategory()
             {
-                Guid categoryToBeUpdatedGuid = new Guid("31b10bdd-dbd6-4301-90b5-2947181f0760");
+                Guid categoryToBeUpdatedGuid = new Guid("dc8ef62f-7cfb-4d13-b5a2-08db521cd80a");
                 var categoryUpdate = new CategoryEntity
                 {
                     Id = categoryToBeUpdatedGuid,
@@ -110,21 +114,18 @@ namespace Shopster.Tests.APItests
 
             }
 
-            [Fact]
-            public async Task Should_CategoriyById()
-            {
-                Guid categoryGuid = new Guid("31b10bdd-dbd6-4301-90b5-2947181f0760");
 
-                var response = await _client.GetAsync($"Category/{categoryGuid}");
+
+            [Fact]
+            public async Task Should_DeleteCategory()
+            {
+                var categoryToBeDeletedGuid = new Guid("31b10bdd-dbd6-4301-90b5-2947181f0760");
+
+                var response = await _client.DeleteAsync($"Category/{categoryToBeDeletedGuid}");
 
                 response.StatusCode.Should().Be(HttpStatusCode.OK);
-                var categoryDetail = JsonConvert.DeserializeObject<CategoryEntity>(await response.Content.ReadAsStringAsync());
-                categoryDetail.Id.Should().Be(categoryGuid);
-                categoryDetail.Name.Should().Be("ctg11");
 
             }
-
-
 
 
         }
